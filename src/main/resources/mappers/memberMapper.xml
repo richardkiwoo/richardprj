@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.memberMapper">
+
+	<!-- 
+		mybatis-config.xml의 typeAlias에 등록해두지 않았다면 
+		
+		<select id="selectMember" resultType="com.example.dto.MemberVO" >
+			SELECT ID, PW ,NAME FROM TEST
+		</select>
+		
+		이렇게 해야 한다.
+	-->
+
+	<select id="selectMember" parameterType="memberVO"
+		resultType="memberVO">
+		SELECT ID, PW ,NAME FROM TEST
+	</select>
+	
+	
+	<insert id="registerMember" parameterType="memberVO">
+	 
+		INSERT INTO MEMBER ( 
+			mbrid,
+			mbrpw,
+			mbrEmail,
+			mbrName,
+			mbrMobile,
+			regDate
+		)VALUES( 
+			#{mbrid},
+			#{mbrpw},
+			#{mbrEmail},
+			#{mbrName},
+			#{mbrMobile},
+			sysdate()
+		)
+	</insert>
+
+	<select id="selectMembers" parameterType="memberVO" resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		<choose>
+			<when test="mbrid != '' and mbrid != null">
+				WHERE mbrid = #{mbrid}
+			</when>
+		</choose>
+	</select>
+	
+</mapper>
