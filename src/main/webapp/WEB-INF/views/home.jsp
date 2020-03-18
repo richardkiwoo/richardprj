@@ -135,6 +135,8 @@
 
 
 		<h2><a href="/downloadFileList.do">다운로드 파일목록</a></h2>
+		
+		<h2><a href="/game.do">게임 결과 입력</a></h2>
 
 <%-- 	<table>
 		<thead>

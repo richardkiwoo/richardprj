@@ -35,14 +35,6 @@ public class MemberController {
 		return "register_form";
 	}
 	
-	
-	//@RequestMapping(value = "/register.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String register(MemberVO member) throws Exception {
-//
-//		int reuslt = memberService.registerMember(member);
-//		// if(result < 1)
-//		return "home";
-//	}
 	 
 	@RequestMapping(value = "/register.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView register(MemberVO member) throws Exception {

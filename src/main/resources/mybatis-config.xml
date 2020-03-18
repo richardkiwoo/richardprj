@@ -7,6 +7,7 @@
 		<typeAliases>
 			<typeAlias type="com.example.dto.MemberVO" alias="memberVO"/>
 			<typeAlias type="kr.co.richardprj.dto.FileVO" alias="fileVO"/>
+			<typeAlias type="kr.co.richardprj.dto.GameVO" alias="gameVO"/>
 		</typeAliases>
 		
 	</configuration>

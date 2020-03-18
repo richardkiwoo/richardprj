@@ -16,7 +16,7 @@ import kr.co.richardprj.dto.FileVO;
 @Service
 public class FileServiceImpl implements FileService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 	
 	@Inject
 	private FileDAO dao;

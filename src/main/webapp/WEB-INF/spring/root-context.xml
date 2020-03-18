@@ -13,20 +13,35 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
-<!-- 	    <beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <beans:property name="locations">
-            <beans:list>    
-                <beans:value>classpath:/config/config.properties</beans:value>
-                <beans:value>classpath:/config/config2.properties</beans:value>
-            </beans:list>
-        </beans:property>
+	<!-- properties db정보 암호화를 위해 설정 -->
+	<!-- <bean id="environmentVariablesConfiguration" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">  
+        <property name="algorithm" value="PBEWithMD5AndDES" />  
+        <property name="password" value="BRACE_PASS" />
+	</bean>
+	
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">  
+	    <property name="config" ref="environmentVariablesConfiguration" />  
+	</bean>  
+	
+	<bean id="propertyConfigurer" class="org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer">  
+        <constructor-arg ref="configurationEncryptor" />  
+        <property name="locations">  
+            <list>  
+                <value>/WEB-INF/spring/dbinfo.properties</value>
+            </list>  
+        </property>  
+	</bean> -->
 
-    </beans:bean>
- -->
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="jdbc:log4jdbc:mysql://127.0.0.1:3306/richard_scheme?useSSL=false&amp;serverTimezone=UTC" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+	</bean> -->
+		
 	
 	<!-- MySQL dataSource -->
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<property name="url"
 			value="jdbc:log4jdbc:mysql://127.0.0.1:3306/richard_scheme?useSSL=false&amp;serverTimezone=UTC"></property>

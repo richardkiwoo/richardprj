@@ -187,6 +187,13 @@
 		    <version>1.4</version>
 		</dependency>
 		
+		<!--  properties 설정 값 암호화를 위해 등록 -->
+		<dependency>
+		    <groupId>org.jasypt</groupId>
+		    <artifactId>jasypt-spring3</artifactId>
+		    <version>1.9.3</version>
+		</dependency>		
+		
 	</dependencies>
 	
 	<build>

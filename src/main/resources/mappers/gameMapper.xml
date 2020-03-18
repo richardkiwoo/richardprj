@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.richardprj.mapper.gameMapper">
+
+	<select id="selectGameAll" parameterType="gameVO" resultType="gameVO">
+		SELECT * FROM GAME
+	</select>
+	
+	<insert id="insertGameResult" parameterType="gameVO">
+	 
+		INSERT INTO GAME ( 
+			GameID
+			,SDCd
+			,MbrId
+			,MbrNm
+			,TeamPlayerId
+			,TeamPlayerNm
+			,OTeamPlayerId1
+			,OTeamPlayerId2
+			,OTeamPlayerNm1
+			,OTeamPlayerNm2
+			,WinLoseCd
+			,OurScore
+			,OpponentScore
+			,CourtNo
+			,GameTime
+			,UpdDate
+		)VALUES( 
+			#{gameID            },
+			#{sDCd              },
+			#{mbrId             },
+			#{mbrNm             },
+			#{teamPlayerId      },
+			#{teamPlayerNm      },
+			#{oTeamPlayerId1    },
+			#{oTeamPlayerId2    },
+			#{oTeamPlayerNm1    },
+			#{oTeamPlayerNm2    },
+			#{winLoseCd         },
+			#{ourScore          },
+			#{opponentScore     },
+			#{courtNo           },
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+
+	<select id="selectGame" parameterType="gameVO" resultType="gameVO">
+		SELECT *
+		FROM GAME
+		<choose>
+			<when test="gameID != '' and gameID != null">
+				WHERE gameID = #{gameID}
+			</when>
+		</choose>
+	</select>
+	
+	<select id="selectGameList" parameterType="gameVO" resultType="gameVO">
+		SELECT *
+		FROM GAME
+		<choose>
+			<when test="gameID != '' and gameID != null">
+				WHERE gameID = #{gameID}
+			</when>
+			<when test="mbrId != '' and mbrId != null">
+				WHERE mbrId = #{mbrId}
+			</when>
+		</choose>
+	</select>
+	
+	<update id="updateGameResult" parameterType="gameVO">
+		update game set
+		<choose>
+			<when test="sDCd != '' and sDCd != null">
+				SDCd            = #{sDCd              },
+			</when>
+		</choose>
+		<choose>
+			<when test="mbrId != '' and mbrId != null">
+				MbrId           = #{mbrId             },
+			</when>
+		</choose>
+		<choose>
+			<when test="mbrNm != '' and mbrNm != null">
+				MbrNm           = #{mbrNm             },
+			</when>
+		</choose>
+		<choose>
+			<when test="teamPlayerId != '' and teamPlayerId != null">
+				TeamPlayerId    = #{teamPlayerId      },
+			</when>
+		</choose>
+		<choose>
+			<when test="teamPlayerNm != '' and teamPlayerNm != null">
+				TeamPlayerNm    = #{teamPlayerNm      },
+			</when>
+		</choose>
+		<choose>
+			<when test="oTeamPlayerId1 != '' and oTeamPlayerId1 != null">
+				OTeamPlayerId1  = #{oTeamPlayerId1    },
+			</when>
+		</choose>
+		<choose>
+			<when test="oTeamPlayerId2 != '' and oTeamPlayerId2 != null">
+				OTeamPlayerId2  = #{oTeamPlayerId2    },
+			</when>
+		</choose>
+		<choose>
+			<when test="oTeamPlayerNm1 != '' and oTeamPlayerNm1 != null">
+				OTeamPlayerNm1  = #{oTeamPlayerNm1    },
+			</when>
+		</choose>
+		<choose>
+			<when test="oTeamPlayerNm2 != '' and oTeamPlayerNm2 != null">
+				OTeamPlayerNm2  = #{oTeamPlayerNm2    },
+			</when>
+		</choose>
+		<choose>
+			<when test="winLoseCd != '' and winLoseCd != null">
+				WinLoseCd       = #{winLoseCd         },
+			</when>
+		</choose>
+		<choose>
+			<when test="ourScore != '' and ourScore != null">
+				OurScore        = #{ourScore          },
+			</when>
+		</choose>
+		<choose>
+			<when test="opponentScore != '' and opponentScore != null">
+				OpponentScore   = #{opponentScore     },
+			</when>
+		</choose>
+		<choose>
+			<when test="courtNo != '' and courtNo != null">
+				CourtNo			   = #{courtNo           },
+			</when>
+		</choose>
+			UpdDate = sysdate()  
+		where gameID =  #{gameID}
+	</update>
+	
+</mapper>
