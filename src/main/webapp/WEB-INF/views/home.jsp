@@ -19,6 +19,8 @@
 		text-shadow: black 0.2em 0.2em 0.2em;
 		color: white;
 	}
+	
+	.dropdown:hover .dropdown-menu {display: block;}
 	</style>
 	<script type="text/javascript">
 	function logout(){

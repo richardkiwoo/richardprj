@@ -20,8 +20,10 @@
     font-family: 'Catamaran', sans-serif;}
 .title p{font-size: 24px;color: #fff; background-color: #51b0dc;
 display: inline;padding: 14px 20px 10px 20px; font-weight: 900;}
-.title h1 a{color: #fff;background-color: #4a9abf;padding: 14px 20px 10px 20px;
-font-weight: 400; margin-top: -7px;}
+.title h1 a{color: #fff;background-color: #4a9abf;padding: 2px 20px 2px 20px;
+font-weight: 400; margin-top: -7px; transition: box-shadow 0.3s ease;}
+.title h1 a:hover{box-shadow: 0 0 0 3px rgba(75,154,191,0.9) inset,
+    0 0 0 100px rgba(0,0,0,0.1) inset;}
 
 /* media query  320/ 480/ 600/ 768/ 960/ 1024/ 1280 */
 @media (max-width : 1280px){
