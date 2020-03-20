@@ -187,13 +187,22 @@
 		    <version>1.4</version>
 		</dependency>
 		
-		<!--  properties 설정 값 암호화를 위해 등록 -->
-		<dependency>
+		<!--  properties 설정 값 암호화를 위해 등록 jasyp-spring31을 사용한다.-->
+		<!--
+ 		<dependency>
 		    <groupId>org.jasypt</groupId>
 		    <artifactId>jasypt-spring3</artifactId>
 		    <version>1.9.3</version>
-		</dependency>		
-		
+		</dependency> 
+		-->
+
+		<dependency>
+		    <groupId>org.jasypt</groupId>
+		    <artifactId>jasypt-spring31</artifactId>
+		    <version>1.9.2</version>
+		</dependency>
+
+
 	</dependencies>
 	
 	<build>

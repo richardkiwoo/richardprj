@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.example.dto.MemberVO;
 import com.example.service.MemberService;
 
 /**
@@ -37,6 +35,16 @@ public class HomeController {
 		//List<MemberVO> memberList = service.selectMember();
 		
 		//model.addAttribute("memberList", memberList);
+		
+		/*
+		 *  암호화 복호화 확인 소스
+		 * StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+		 * encryptor.setAlgorithm("PBEWITHMD5ANDDES"); encryptor.setPassword("richard");
+		 * String encryptedPass = encryptor.encrypt("richard"); String decryptedPass =
+		 * encryptor.decrypt(encryptedPass);
+		 * System.out.println("Encrypted Password for admin is : "+encryptedPass);
+		 * System.out.println("Decrypted Password for admin is : "+decryptedPass);
+		 */
 
 		return "home";
 	}

@@ -14,25 +14,28 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
 	<!-- properties db정보 암호화를 위해 설정 -->
-	<!-- <bean id="environmentVariablesConfiguration" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">  
-        <property name="algorithm" value="PBEWithMD5AndDES" />  
-        <property name="password" value="BRACE_PASS" />
-	</bean>
-	
-	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">  
-	    <property name="config" ref="environmentVariablesConfiguration" />  
-	</bean>  
-	
-	<bean id="propertyConfigurer" class="org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer">  
-        <constructor-arg ref="configurationEncryptor" />  
-        <property name="locations">  
-            <list>  
-                <value>/WEB-INF/spring/dbinfo.properties</value>
-            </list>  
-        </property>  
-	</bean> -->
 
-	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+        <property name="algorithm" value="PBEWithMD5AndDES" />
+        <property name="password" value="richard" /> <!-- 암호화 시 입력한 pwd를 적어준다. db접속 password가 아님! -->
+    </bean>
+    
+    <bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+        <property name="config" ref="encryptorConfig"></property>
+    </bean>
+
+    <bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+        <constructor-arg ref="encryptor" />
+            <property name="locations">
+                <list>
+                    <value>classpath:/property/db.properties</value>
+ 				    <!-- 동일한 암호화키값으로 생성된 키값을저장한 다른 properties를 추가할 수 있습니다 -->
+                </list>
+            </property>
+    </bean>
+
+	<!-- 
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${db.driver}" />
 		<property name="url" value="jdbc:log4jdbc:mysql://127.0.0.1:3306/richard_scheme?useSSL=false&amp;serverTimezone=UTC" />
 		<property name="username" value="${db.username}" />
@@ -43,10 +46,11 @@
 	<!-- MySQL dataSource -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="url"
-			value="jdbc:log4jdbc:mysql://127.0.0.1:3306/richard_scheme?useSSL=false&amp;serverTimezone=UTC"></property>
-		<property name="username" value="richard"></property>
-		<property name="password" value="richard"></property>
+		<property name="url" value="jdbc:log4jdbc:mysql://127.0.0.1:3306/richard_scheme?useSSL=false&amp;serverTimezone=UTC"></property>
+		<!-- <property name="username" value="richard"></property>
+		<property name="password" value="richard"></property> -->
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
 	</bean>
 
 	<!-- mybatis SqlSessionFactoryBean -->
