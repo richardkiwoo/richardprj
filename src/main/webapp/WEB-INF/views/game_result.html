@@ -7,132 +7,117 @@
 
     <link rel="stylesheet" href="../../resources/css/customized/reset.css">
     <style>
-      #wrap { width : 800px; height:600px; margin: 0 auto; border: 1px solid black;}
-        .title {text-align: center; width:100%;height: 40px; background-color: #0033cc; color: white;}
-        .sdcd {width: 100%; height: 40px; border: 2px solid #e6ffe6; }
-        .sdcd_t {width:30%; height: 100%;  float:left; }
-        .sdcd_v{width:70%; height: 100%;float:left; background: yellowgreen;}
-        .versus {width: 100%; height: 100px;}
+	.searchModal {
+		/* display: none; Hidden by default */
+		position: fixed; /* Stay in place */
+		z-index: 10; /* Sit on top */
+		left: 0;
+		top: 0;
+		width: 100%; /* Full width */
+		height: 100%; /* Full height */
+		overflow: auto; /* Enable scroll if needed */
+		background-color: rgb(0,0,0); /* Fallback color */
+		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
+	/* Modal Content/Box */
+	.search-modal-content {
+		background-color: #fefefe;
+		margin: 15% auto; /* 15% from the top and centered */
+		padding: 20px;
+		border: 1px solid #888;
+		width: 50%; /* Could be more or less, depending on screen size */
+        height: 70%;
+	}
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
-        .ourteam{width:45%; float:left; border:1px solid #777;}
-        .ourteam .tit{text-align:center; width:100%; border: 1px solid green;}
-        .our_players {width: 65%;float: left;}
-            .player1 {height: 30px; width:100%; border: 1px solid black;}
-            .our_players input{width: 60px;}
-            .player2 {height: 30px; width:100%; border: 1px solid black;}
-            .player2 input {float: left; }
-            .player2 .find_mbr{float: left;}
-        .ourteam .score {width:30%; float:right;border: 1px solid black;}
-            .ourteam .score input{width: 30px;}
-        
-        .vs{ text-align: center;width:8%; height: 20%;padding-top: 50px; float:left;border: 1px solid black;}
-        
-        .opponentTeam{width:45%; height: 100%; float:right;border: 1px solid black;}
-        .opponentTeam .tit{text-align:center; width:100%; border: 3px solid rgb(183, 212, 183);}
-            .opponentTeam input{width: 60px;}
+    .flex-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:flex-start;
+    }
+    .flex-col {
+        display: flex;
+        flex-direction: column;
+    }
+   
+    .member1 {
+        margin: 3px;
+        cursor: pointer;
+        /* background-color: blue; */
+    }
+    .member1 h4 {text-align: center; font-size: 13px; color: white; 
+    /* background-color: rgb(13, 66, 2); */
+    background-image: linear-gradient(green,yellow);
+    }
 
-        .opponentTeam .score{ width:30%; float:left; }
-        .opponentTeam .score input{width: 30px;}
-        .opp_players {width: 70%;height: 100%; float: left;}
-        
-        .player3 {height: 30px; width:100%; }
-        .player3 input{width: 60px;float: left;}
-        .player3 .find_mbr{width: 40px; float: left;}
+    .close {margin-top:auto;}
+    /* 회원 스타일 */
 
-        .player4 {height: 30px; width:100%;}
-        .player4 input{width: 60px; float: left;}
-        .player4 .find_mbr{width: 40px; float: left;}
-        
-        .game_result{ height: 50px; clear: both; border: 1px solid black;}
-        .game_result .gr_tit{height: 30px; float:left; width: 40%; border: 1px solid black;}
-        .game_result .gr_result{ text-align: left; height: 30px;float:right; width: 50%; border: 1px solid black;}
-        .court {height: 40px; border: 1px solid black;}
-        .court .c_tit{height: 30px; float:left; width: 40%; border: 1px solid black;}
-        .court .c_cont { text-align: left; height: 30px;float:right; width: 50%; border: 1px solid black;}
-        .save {width:100%;height: 40px; text-align: center;margin: 30px 30px;}
     </style>
-    <script>
 
-
-    </script>
 </head>
 <body>
-    <form id="frm" name="frm" action="/saveGameResult.do" method="POST">
-        <div id="wrap">
-            <div class="title"><h1>게임 결과 입력</h1></div>
-            <div class="sdcd">
-                <div class="sdcd_t"><h2>단식 복식 구분</h2></div>
-                <div class="sdcd_v">
-                    <select name="sDCd" id="sDCd">
-                        <option value="D" selected>복식</option>
-                        <option value="S" selected>단식</option>
-                    </select>
-                </div>
+ 	<!-- 회원 검색 -->
+    <div id="modal" class="searchModal">
+        <div class="search-modal-content flex-col">
+            <div class="page-header">
+                <h3>회원선택</h3>
             </div>
-            <div class="versus">
-                <div class="ourteam">
-                    <div class="tit"><h2>Our Team</h2></div>
-                    <div class="our_players">
-                        <div class="player1">
-                            <input type="hidden" name="mbrId" value="${loginInfo.mbrid}">
-                            <input type="text" name="mbrNm" value="${loginInfo.mbrName}">
-                        </div>
-                        <div class="player2">
-                            <input type="hidden" name="teamPlayerId" value="">
-                            <input type="text" name="teamPlayerNm" value="">
-                            <input class="find_mbr" type="button" value="찾기" onclick="findMember(0);">
-                        </div>
-                    </div>
-                    <div class="score">
-                        <input type="text" name="ourScore" value="0">
+            <div><hr></div>
+            <div class="flex-row">
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
                     </div>
                 </div>
-                <div class="vs"><h1>VS</h1></div>
-                <div class="opponentTeam">
-                    <div class="tit"><h2>Opponent Team</h2></div>
-                    <div class="score">
-                        <input type="text" name="opponentScore" value="0">
-                    </div>
-                    <div class="opp_players">
-                        <div class="player3">
-                            <input type="hidden" name="oTeamPlayerId1" value="">
-                            <input type="text" name="oTeamPlayerNm1" value="dldldldl">
-                            <input class="find_mbr" type="button" value="찾기" onclick="findMember(1);">
-                        </div>
-                        <div class="player4">
-                            <input type="hidden" name="oTeamPlayerId2" value="">
-                            <input type="text" name="oTeamPlayerNm2" value="">
-                            <input class="find_mbr" type="button" value="찾기" onclick="findMember(2);">
-                        </div>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
                     </div>
                 </div>
-            </div>
-            <div class="game_result">
-                <div class="gr_tit"><h2>승패(Win or Lose)</h2></div>
-                <div class="gr_result">
-                    <label><input type="radio" name="winLoseCd" value="W" checked> Win</label>
-                    <label><input type="radio" name="winLoseCd" value="L"> Lose</label>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4 class="mbr-nm">홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4 class="mbr-nm">홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
                 </div>
             </div>
-            <div class="court">
-                <div class="c_tit"><h2>코트(Court)</h2></div>
-                <div class="c_cont">
-                    <select name="courtNo" >
-                        <option value="1">1코드</option>
-                        <option value="2">2코드</option>
-                        <option value="3">3코드</option>
-                        <option value="4">4코드</option>
-                        <option value="5">5코드</option>
-                        <option value="6">6코드</option>
-                        <option value="e">기타</option>
-                    </select>
-                </div>
-            </div>
-            <div class="save">
-                <input type="button" value="저장" onclick="saveGame();">
-                <input type="button" value="취소" onClick="location.href='/'">
+
+            <div><hr></div>
+            <div class="close" style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="closeModal();">
+                <span class="pop_bt modalCloseBtn" style="font-size: 13pt;">닫기
+                </span>
             </div>
         </div>
-        </form>
+    </div>
 </body>
 </html>

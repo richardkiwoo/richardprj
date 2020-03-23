@@ -32,53 +32,33 @@
 		
 		//회원찾기 팝업
 		$('.member-btn').click(function(){
-			//$('button').click(function() {
-	        //var $href = $(this).attr('href');
-	        layer_popup();
+			//$("#modal").show();
+			
+			
+			var id, nm = "";
+			
+			$(this).prev().val(nm);
+			$(this).prev().prev().val(id);
 	    });
 	});
 
-	
-	
-    function layer_popup(){
+	function closeModal() {
+		$('.searchModal').hide();
+	};
 
-        var $el = $('#layer2');        //레이어의 id를 $el 변수에 저장
-        var isDim = $el.prev().hasClass('dimBg');   //dimmed 레이어를 감지하기 위한 boolean 변수
-
-       
-        $('.dim-layer').fadeIn();
-        
-        //isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
-		
-        // ~~ : Math.floor() 와 동등하게 쓰이는 연산자(소스아래 자리 없앤다.)
-        var $elWidth = ~~($el.outerWidth()),
-            $elHeight = ~~($el.outerHeight()),
-            docWidth = $(document).width(),
-            docHeight = $(document).height();
-
-        alert($elWidth +",\n" + $elHeight +", \n"+ docWidth +", \n"+docHeight );
-
-        // 화면의 중앙에 레이어를 띄운다.
-        if ($elHeight < docHeight || $elWidth < docWidth) {
-            $el.css({
-                marginTop: -$elHeight /2,
-                marginLeft: -$elWidth/2
-            })
-        } else {
-            $el.css({top: 0, left: 0});
-        }
-
-        $el.find('a.btn-layerClose').click(function(){
-            isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
-            return false;
-        });
-
-        $('.dimBg').click(function(){
-            $('.dim-layer').fadeOut();
-            return false;
-        });
-
-    }
+	function showMember(){
+		$.ajax({
+			url: "memberList.do",
+		    type: "POST",
+		    cache: false,
+		    dataType: "json",
+		    data: $('#frm').serialize(),
+			success : function(result) {
+				
+			}
+		});
+	}
+   
 
 </script>
 <style type="text/css">
@@ -165,67 +145,58 @@
 		 	 filter:alpha(opacity=0); /* IE8 숨기기 */ 
 		 	 -webkit-appearance: none;/* 네이티브 외형 감추기 */ 
 		 	 -moz-appearance: none; appearance: none; }
+		 	 
+		 	 
+	
+	/* 회원검색 화면 */
+.searchModal {
+		display: none; /*Hidden by default */
+		position: fixed; /* Stay in place */
+		z-index: 10; /* Sit on top */
+		left: 0;
+		top: 0;
+		width: 100%; /* Full width */
+		height: 100%; /* Full height */
+		overflow: auto; /* Enable scroll if needed */
+		background-color: rgb(0,0,0); /* Fallback color */
+		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
+	/* Modal Content/Box */
+	.search-modal-content {
+		background-color: #fefefe;
+		margin: 15% auto; /* 15% from the top and centered */
+		padding: 20px;
+		border: 1px solid #888;
+		width: 50%; /* Could be more or less, depending on screen size */
+        height: 70%;
+	}
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
-		/* 회원검색 화면 */
-		.pop-layer .pop-container {
-		  padding: 20px 25px;
-		}
-		
-		p.ctxt {
-		  color: #666;
-		  line-height: 25px;
-		}
-		
-		.btn-r {
-		  width: 100%;
-		  margin: 10px 0 20px;
-		  padding-top: 10px;
-		  border-top: 1px solid #DDD;
-		  text-align: right;
-		}
-		
-		.dim-layer {
-		  display: none;
-		  position: fixed;
-		  _position: absolute;
-		  top: 0;
-		  left: 0;
-		  width: 100%;
-		  height: 100%;
-		  z-index: 100;
-		}
-		
-		.dim-layer .dimBg {
-		  position: absolute;
-		  top: 0;
-		  left: 0;
-		  width: 100%;
-		  height: 100%;
-		  background: #000;
-		  opacity: .5;
-		  filter: alpha(opacity=50);
-		}
-		
-		.dim-layer {
-		  display: block;
-		}
-		
-		a.btn-layerClose {
-		  display: inline-block;
-		  height: 25px;
-		  padding: 0 14px 0;
-		  border: 1px solid #304a8a;
-		  background-color: #3f5a9d;
-		  font-size: 13px;
-		  color: #fff;
-		  line-height: 25px;
-		}
-		
-		a.btn-layerClose:hover {
-		  border: 1px solid #091940;
-		  background-color: #1f326a;
-		  color: #fff;
-		}
+    .flex-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:flex-start;
+    }
+    .flex-col {
+        display: flex;
+        flex-direction: column;
+    }
+   
+    .member1 {
+        margin: 3px;
+        cursor: pointer;
+        /* background-color: blue; */
+    }
+    .member1 h4 {text-align: center; font-size: 13px; color: white; 
+    /* background-color: rgb(13, 66, 2); */
+    background-image: linear-gradient(green,yellow);
+    }
+
+    .close {margin-top:auto;}
+
 </style>
 </head>
 
@@ -271,7 +242,7 @@
                     <label for="ex_select">본인</label>
                     <input type="hidden" name="mbrId" value="${loginInfo.mbrid}">
                     <input type="text" name="mbrNm" value="${loginInfo.mbrName}">
-                    <input class="member-btn"  type="button" value="찾기">
+                    <input class="member-btn"  type="button" value="찾기" style="display:none;">
                 </div>
                 <div class="flex-item">
                     <label for="ex_select">파트너</label>
@@ -291,13 +262,13 @@
                     <label for="ex_select">Player1</label>
                     <input type="hidden" name="oTeamPlayerId1" value="">
                     <input type="text" name="oTeamPlayerNm1" value="">
-                    <input type="button" value="찾기" onclick="findMember(1);">
+                    <input class="member-btn"  type="button" value="찾기" >
                 </div>
                 <div class="flex-item row-flex">
                     <label for="ex_select">Player1</label>
                     <input type="hidden" name="oTeamPlayerId2" value="">
                     <input type="text" name="oTeamPlayerNm2" value="">
-                    <input type="button" value="찾기" onclick="findMember(2);">
+                    <input class="member-btn"  type="button" value="찾기" >
                 </div>
             </div>
         </div>
@@ -326,27 +297,65 @@
     </form>
     
 	<!-- 회원 검색 -->
-	<div class="dim-layer">
-	    <div class="dimBg"></div>
-	    <div id="layer2" class="pop-layer">
-	        <div class="pop-container">
-	            <div class="pop-conts">
-	                <!--content //-->
-	                <p class="ctxt">Thank you.<br>
-	                    Your registration was submitted successfully.<br>
-	                    Selected invitees will be notified by e-mail on JANUARY 24th.<br><br>
-	                    Hope to see you soon!
-	                </p>
-	
-	                <div class="btn-r">
-	                    <a href="#" class="btn-layerClose">Close</a>
-	                </div>
-	                <!--// content-->
-	            </div>
-	        </div>
-	    </div>
-	</div>
-    
-    
+	<!-- 회원 검색 -->
+    <div id="modal" class="searchModal">
+        <div class="search-modal-content flex-col">
+            <div class="page-header">
+                <h3>회원선택</h3>
+            </div>
+            <div><hr></div>
+            <div class="flex-row">
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="/resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4>홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4 class="mbr-nm">홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+                <div class="member1">
+                    <h4 class="mbr-nm">홍길동</h4>
+                    <div class="mbr-pic">
+                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div><hr></div>
+            <div class="close" style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="closeModal();">
+                <span class="pop_bt modalCloseBtn" style="font-size: 13pt;">닫기
+                </span>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
