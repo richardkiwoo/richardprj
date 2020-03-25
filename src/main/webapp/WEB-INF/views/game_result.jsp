@@ -32,28 +32,53 @@
 		
 		//회원찾기 팝업
 		$('.member-btn').click(function(){
-			//$("#modal").show();
 			
+			openMemberList();
 			
-			var id, nm = "";
+			$("#modal").show();
 			
-			$(this).prev().val(nm);
-			$(this).prev().prev().val(id);
+			var id, nm = "test";
+			
+			//$(this).prev().val(nm);
+			//$(this).prev().prev().val(id);
 	    });
+		
+		$('.member1').click(function(){
+			alert($(this).children('h4'));
+		});
 	});
 
 	function closeModal() {
 		$('.searchModal').hide();
 	};
 
-	function showMember(){
+	function openMemberList(){
 		$.ajax({
-			url: "memberList.do",
+			url: "/memberList.do",
 		    type: "POST",
 		    cache: false,
 		    dataType: "json",
 		    data: $('#frm').serialize(),
 			success : function(result) {
+				var cnt = result.members.length;
+				var mbrid, mbrName;
+				var innerHtml = "";
+				
+				for(var i=0; i<cnt; i++){
+					mbrid = result.members[i].mbrid;
+					mbrName = result.members[i].mbrName;
+					
+					innerHtml += "<div id='mbrid' style='display:none'>"+mbrid + "</div>";
+					innerHtml += "<div class='member1'>";
+					innerHtml += "<h4>" + mbrName+"</h4>";
+					innerHtml += "<div class='mbr-pic'>";
+					innerHtml += "    <img src='/resources/images/person.gif' width='100px' height='100px'>";
+					innerHtml += "</div>";
+					innerHtml += "</div>";
+                	
+					$("#memberInfo").html(innerHtml);
+				}
+				
 				
 			}
 		});
@@ -97,7 +122,7 @@
         
         /* vs div를 넓게 한다. */
          /* .item:nth-child(3) .flex-item:nth-child(2) { with: 200px; } */
-         .vs {width:200px;}
+         .vs {width:200px; display: block; text-align: center;}
          
 		input[type="text"] { 
 		 width: 60px; padding: 5px 5px; margin: 5px 0; box-sizing: border-box; 
@@ -202,6 +227,7 @@
 
 <body>
     <form id="frm" name="frm" action="/saveGameResult.do" method="POST">
+    <input type="hidden" name="WinLoseCd" value="W">
     <div class="main col-flex">
         <div class="item flex-item row-flex">
             <h1 class="flex-item">게임 결과 입력</h1>
@@ -251,7 +277,7 @@
                     <input class="member-btn" type="button" value="찾기" >
                 </div>
             </div>
-            <div class="flex-item vs row-flex">
+            <div class="flex-item vs">
                 <h1>VS</h1>
             </div>
             <div class="flex-item col-flex">
@@ -294,9 +320,7 @@
             <input type="button" value="취소" onClick="location.href='/'">
         </div>
     </div>
-    </form>
-    
-	<!-- 회원 검색 -->
+
 	<!-- 회원 검색 -->
     <div id="modal" class="searchModal">
         <div class="search-modal-content flex-col">
@@ -304,49 +328,13 @@
                 <h3>회원선택</h3>
             </div>
             <div><hr></div>
-            <div class="flex-row">
-                <div class="member1">
+            <div id="memberInfo" class="flex-row">
+                <!-- <div class="member1">
                     <h4>홍길동</h4>
                     <div class="mbr-pic">
                         <img src="/resources/images/person.gif" width="100px" height="100px" alt="">
                     </div>
-                </div>
-                <div class="member1">
-                    <h4>홍길동</h4>
-                    <div class="mbr-pic">
-                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
-                    </div>
-                </div>
-                <div class="member1">
-                    <h4>홍길동</h4>
-                    <div class="mbr-pic">
-                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
-                    </div>
-                </div>
-                <div class="member1">
-                    <h4>홍길동</h4>
-                    <div class="mbr-pic">
-                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
-                    </div>
-                </div>
-                <div class="member1">
-                    <h4>홍길동</h4>
-                    <div class="mbr-pic">
-                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
-                    </div>
-                </div>
-                <div class="member1">
-                    <h4 class="mbr-nm">홍길동</h4>
-                    <div class="mbr-pic">
-                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
-                    </div>
-                </div>
-                <div class="member1">
-                    <h4 class="mbr-nm">홍길동</h4>
-                    <div class="mbr-pic">
-                        <img src="../../resources/images/person.gif" width="100px" height="100px" alt="">
-                    </div>
-                </div>
+                </div> -->
             </div>
 
             <div><hr></div>
@@ -356,6 +344,6 @@
             </div>
         </div>
     </div>
-
+    </form>
 </body>
 </html>

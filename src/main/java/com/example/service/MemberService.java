@@ -8,6 +8,8 @@ public interface MemberService {
 	
 	public List<MemberVO> selectMember() throws Exception;
 	
+	public List<MemberVO> selectMember(MemberVO member) throws Exception;
+	
 	public int registerMember(MemberVO member) throws Exception;
 	
 	public int checkID(MemberVO member) throws Exception;

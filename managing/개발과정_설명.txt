@@ -1,0 +1,260 @@
+
+
+
+mvn archetype:generate -DgroupId=com.newlecture -DartifactId=javaprj -DarchetypeArtifactId=maven-archetype-quickstart
+
+	<properties>
+		<!-- 자바 버전 -->
+		<java-version>1.8</java-version>
+		<!-- 스프링버전 -->
+		<org.springframework-version>5.1.9.RELEASE</org.springframework-version>
+	</properties>
+	
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+	</dependencies>
+
+
+
+ubuntu 설치
+richard / richard
+
+-- root계정으로 변경
+$sudo su - root
+
+find ./ -name *.java
+1바이트 이상( -1c 1바이트 이하)
+find . -name *.java -size +1c
+head -n2 파일명 (앞 2중 표시)
+--파일 찾기
+grep "Hello Li" Hello.java
+--파일 비교
+cmp Hello.java Hello1.java
+diff Hello.java Hello1.java
+-- 파일로 남기기
+history > test
+echo "hello" > test
+-- 파일에 추가
+echo "hello" >> test
+
+cat test | sort -r  (sorting reverse)
+ | (파이프) 는 결과를 오른쪽으로 넘겨줘서 처리할 수 있도록 함.
+ ; (세미콜론) 은 명령어 여러개를 한 줄로 처리하기 위해 사용한다.
+
+tar (Tape ARchive) 
+tar -cf name.tar a b c (파일목록들)
+tar -zcf name.tar.gz a b c ( -z 압축하기)
+
+압축풀기
+tar -xvf name.tar
+tar -zxvf name.tar.gz  (-v 과정을 본다)
+
+--link
+ln -s test1.txt test1.ln  (symbolic link)
+
+-- PATH에 추가하기
+# PATH=$PATH:/home:/var
+# echo $PATH
+/usr/local/sbin:/bin:/usr/sbin:/usr/bin:/home:/va
+
+useradd - 사용자 추가
+usermod - 변경
+userdel - 삭제
+$useradd dragon
+$cat /etc/passwd 또는 tail -n2 /etc/passwd
+$sudo passwd dragon
+
+사용자 생성 후 /home/dragon 폴더 생성
+
+sudo chown dragon:dragon ./dragon (dragon에게 소유권한, 그룹 추가)
+tail -n3 /etc/group
+$groups dragon (그룹에 대한 정보보기)
+
+스크립트 생성
+useradd testuser
+tail -n2 /etc/passwd
+mkdir /home/testuser
+chown testuser:testuser /home/testuser (소유자와 소유그룹을 변경한다)
+echo "testuser user addded"
+
+--사용자 프롬프트변경
+ echo $PS1  (사용자 프롬프트 확인)
+ PS1="dragon$" (프롬프트 변경)
+ \H : the hostname, \h : the hostname up to the fist '.', \d : the date
+ \n : newline, \r : carriage return, \t : the current time in 24-hour,
+ \T : the current time in 12-hour
+
+--debian pakage
+dpkg -l tree
+dpkg -L tree
+
+--run Level
+/etc/rc6.d
+cat K01atd
+sudo init 6 (시스템 재 시작)
+poweroff
+shutdown 
+halt
+init
+
+
+-- 포트 포워딩으로 통해 본PC의 아이피로 포트접근 하면 virtual머신으로 전송되도록 함
+-- 공유기 포트 포워딩으로 통해서 밖에서 접근할 수 있다.
+
+ftp 설치 확인
+service --status-all
+service vsftpd status
+
+--usb 마운트
+[VirtualBox 6.1.4 Oracle VM VirtualBox Extension Pack]을 다운받아서 설치
+
+virtualbox설정 > USB > 꽂혀있는 usb인식 > 시작
+서버 마운트 : lsblk (ls block)
+sdb sdb1 part가 인식됨.
+/media/usb 생성
+sudo mkdir usb
+cd /dev 에서 확인
+lsblk 과 같이 확인
+sudo mount /dev/sdb1 /media/usb
+sudo umount /media/usb
+
+-- tomcat 사용
+ sudo mv ~/download/apache-tomcat-9.0.31/ tomcat/
+ sudo chown -R root:tomcat apache-tomcat-9.0.31/
+ sudo chmod -R g+w logs/
+ sudo chmod -R g+rx conf/
+
+-- tomcat 사용 권한
+
+
+
+--PPA
+
+
+--authbind
+sudo apt install authbind
+touch /etc/authbind/byport/80
+sudo chown root:tomcat /etc/authbind/byport/80
+chmod 550 /etc/authbind/byport/80
+chgrp tomcat /etc/authbind/byport/80
+tomcat에 startup.sh 에서 authbind 옵션을 추가한다.
+(끝부분에 exec authbind --deep "...... " start...)
+
+
+-- tomcat 서비스 추가
+참조 사이트 : 
+https://blog.woniper.net/204
+
+--mysql ubuntu 설치와 database생성, user생성
+sudo apt-get update (apt 목록 업데이트)
+sudo apt-get install mysql-server (mysql서버 설치)
+sudo ufw allow mysql (외부에서 접속할 수 있도록 mysql 포트(3306)를 열어줌)
+sudo systemctl start mysql (mysql 실행)
+sudo systemctl enable mysql (ubuntu가 재시작할 때 mysql자동시작)
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'richard'; (root 계정 비번 변경)
+show variables like "%version%'; (mysql version확인)
+select user, host, authentication_string from mysql.user; ( mysql의 계정(User) 정보를 확인)
+create database richard; (database생성)
+CREATE USER 'richard'@'localhost' IDENTIFIED BY 'richard'; (richard계정 생성)
+flush privileges; (생성확인)
+grant all privileges on richard.* to richard@localhost; (richard사용자가 richard db에 권한 부여)
+show grants for 'richard'@'localhost'; (사용자의 권한을 확인한다)
+
+
+
+--- Github (richardkiwoo@gmail.com / git!2828 )
+https://github.com/richardkiwoo/test_prj.git
+
+https://gitforwindows.org/  (download git desktop)
+
+local folder로 이동 --> 오른쪽 마우스 Git Bash here 선택
+명령어 
+git init  (.git폴더 생성)
+git remote add origin [remote repository주소]
+git pull origin master (**remote repository에서 끌어옴 https://github.com/richardkiwoo/richardprj.git)
+git status (local과 서버와의 차이점을 확인)
+git add . (변경된 파일이 있는 경우 표시)
+git commit -m "message" (커밋할 때 메시지)
+git push origin master (remote로 변경사항을 push하는 명령어)
+
+git config --global gui.enconding utf-8 (한글 깨짐 방지)
+
+-- VisualStudio 설치
+market place --> Korean
+market place --> live server설치
+font family : D2coding
+
+-- 사용자 패스워드 그대로 사용하기
+alter user 'richard'@'localhost' identified with mysql_native_password by 'richard';
+mysqladmin -u root password root  (root 패스워드 변경 시)
+
+mysql> select @@lower_case_table_names;  (테이블 대소문자 구분안하게 한다)
+ --> 0 이면 대소문자 구분, 1 : 구분안함.
+sudo vi /etc/mysql/my.cnf 
+[mysqld]
+lower_case_table_names = 1  <= 추가
+
+-- ubuntu에서 tomcat write권한을 줘야 할 폴더
+/usr/local/tomcat/apache-tomcat-9.0.31/work  (이유 : jsp파일을 class파일로 변환해야 함)
+
+
+
+-- spring properties db password 암호화
+연관site : https://ktko.tistory.com/entry/Spring-properties암호화
+1. jasypt 다운로드 및 암복호화 문자열 생성 
+   http://www.jasypt.org/download.html 사이트에 방문하여 JASYPT를 다운 받습니다.
+   압축을 풀어서 cmd창으로 들어가서 bin아래에서 아래의 명령어를 입력한다.
+   encrypt input="ktko1234" password="!ktko1234@" algorithm="PBEWITHMD5ANDDES"
+    input: 실제 password, password : 복호화 할 때 사용하는 password
+
+2. pom.xml에 dependency 추가
+		<!-- 1.9.2 혹은 1.9.3 최신버전을 받되, jasypt-spring31을 선택해야 함 -->
+      <dependency>
+          <groupId>org.jasypt</groupId>
+          <artifactId>jasypt-spring31</artifactId>
+          <version>1.9.2</version>
+      </dependency>
+
+3. properties 파일 생성
+	파일 위치는 src\main\resources\property 에 저장했음.
+	파일내부에 db.password=ENC(oX+veMw3S7IDoAxUAfHN/yKlqAhk3FRg) 식으로 생성된 값을 ENC()로 감싸서 넣어준다.
+
+4. root-context.xml(혹은 servlet-context.xml)에 bean 추가
+	  <bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+        <property name="algorithm" value="PBEWithMD5AndDES" />
+        <property name="password" value="!zik0404@" />
+    </bean>
+    
+    <bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+        <property name="config" ref="encryptorConfig"></property>
+    </bean>
+
+    <bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+        <constructor-arg ref="encryptor" />
+            <property name="locations">
+                <list>
+                    <value>classpath:/property/db.properties</value>
+      							<!-- 동일한 암호화키값으로 생성된 키값을저장한 다른 properties를 추가할 수 있습니다 -->
+                </list>
+            </property>
+    </bean>
+
+
+
+--file upload 시 upload path를 properties파일에서 읽어오기
+1. src/main/resources/property/global.properties파일을 생성하고
+2. root-context.xml에 propertyConfigurer 에 프라퍼티 파일을 등록시킨다.
+3. Controller에 @PropertySource("classpath:/property/global.properties") 를 삽입한다.
+4. @Autowired
+	 ApplicationContext context;
+	 라고 멤버변수로 context를 가져온다.
+5. Environment env = context.getEnvironment();
+	 String UPLOAD_PATH = env.getProperty("upload.path");	 
+	 으로 사용하면 된다.
+

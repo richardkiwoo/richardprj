@@ -45,5 +45,10 @@ public class MemberServiceImpl implements MemberService {
 		return retMember;
 	}
 
+	@Override
+	public List<MemberVO> selectMember(MemberVO member) throws Exception {
+		return dao.selectMember(member);
+	}
+
 
 }

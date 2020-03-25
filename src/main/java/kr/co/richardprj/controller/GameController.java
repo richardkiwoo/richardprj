@@ -55,9 +55,9 @@ public class GameController {
 		int result = gameService.insertGameResult(gameVO);
 		mav.setViewName("home");
 		if ( result > 0 )
-			mav.addObject("result", "저장하였습니다!");
+			mav.addObject("result", "saved successfully");
 		else
-			mav.addObject("result", "저장에 실패하였습니다. 다시 시도해 주세요!");	
+			mav.addObject("result", "Sorry error has occurred!!");	
 		
 		return mav;
 				

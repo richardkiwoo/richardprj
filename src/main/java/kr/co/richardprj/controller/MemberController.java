@@ -1,6 +1,7 @@
 package kr.co.richardprj.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -18,13 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.controller.HomeController;
 import com.example.dto.MemberVO;
 import com.example.service.MemberService;
 
 @Controller
 public class MemberController {
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@Inject
 	private MemberService memberService;
@@ -41,9 +41,8 @@ public class MemberController {
 		
 		BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
 		 
-		//¾ÏÈ£È­ ÇÏ±âÀü
-         String cpPwd = scpwd.encode(member.getMbrpw());
-        //¾ÏÈ£È­ ÇÏ¿© password¿¡ ÀúÀå
+		 String cpPwd = scpwd.encode(member.getMbrpw());
+        //ì•”í˜¸í™” í•˜ì—¬ passwordì— ì €ì¥
         member.setCpPw(cpPwd);
         member.setMbrpw(cpPwd);
         
@@ -51,7 +50,7 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView("register_form");
 		if (reuslt > 0) {
-			mav.addObject("message", "°¡ÀÔÃ³¸®°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+			mav.addObject("message", "ê°€ì…ì²˜ë¦¬ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 		}
 	    return mav;
 	}
@@ -81,17 +80,9 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-//		if(req.getSession().getAttribute("loginInfo") != null) {
-//			String msg = "ÀÌ¹Ì ·Î±×ÀÎµÈ »óÅÂÀÔ´Ï´Ù.";
-//			mav.addObject("msg", msg);
-//			mav.setViewName("login");
-//		}else {
-//			mav.setViewName("home");
-//		}
-		
 		MemberVO mem = memberService.login(member);
 		if(mem == null) {
-			String msg = "»ç¿ëÀÚ°¡ ¾ø½À´Ï´Ù.";
+			String msg = "ì‚¬ìš©ìê°€ ì—†ìŠµë‹ˆë‹¤";
 			mav.addObject("msg", msg);
 			mav.setViewName("login");
 		}else {
@@ -102,7 +93,7 @@ public class MemberController {
 				req.getSession().setAttribute("loginInfo", mem);
 				mav.setViewName("home");
 			}else {
-				String msg = "ºñºô¹øÈ£°¡ Æ²·È½À´Ï´Ù.";
+				String msg = "ë¹„ë¹Œë²ˆí˜¸ê°€ í‹€ë ¸ìŠµë‹ˆë‹¤.";
 				mav.addObject("msg", msg);
 				mav.setViewName("login");
 			}
@@ -122,4 +113,19 @@ public class MemberController {
 		return "home";
 
 	}
+	
+	
+	@RequestMapping(value= "/memberList.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getMemberList(Model model, MemberVO memberVO) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		memberVO.setMbrid(null);
+		List<MemberVO> members = memberService.selectMember(memberVO);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("members", members);
+		
+		return map;
+	}
+	
 }

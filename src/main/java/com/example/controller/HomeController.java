@@ -37,7 +37,7 @@ public class HomeController {
 		//model.addAttribute("memberList", memberList);
 		
 		/*
-		 *  ��ȣȭ ��ȣȭ Ȯ�� �ҽ�
+		 *  암호화 복호화 확인 소스
 		 * StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 		 * encryptor.setAlgorithm("PBEWITHMD5ANDDES"); encryptor.setPassword("richard");
 		 * String encryptedPass = encryptor.encrypt("richard"); String decryptedPass =
