@@ -22,6 +22,10 @@
 	</beans:bean>
 	
 	
+	<beans:bean id="excelDownloadView" class="kr.co.richardprj.util.ExcelDownloadView"/>
+    
+    <!-- <beans:bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/> -->
+	
 	<context:component-scan base-package="com.example.controller, kr.co.richardprj.controller" />
 	
 

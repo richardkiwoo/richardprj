@@ -139,6 +139,8 @@
 		<h2><a href="/downloadFileList.do">다운로드 파일목록</a></h2>
 		
 		<h2><a href="/game.do">게임 결과 입력</a></h2>
+		
+		<h2><a href="/excelDownloadUpload.do">게임결과 엑셀 다운로드</a></h2>
 
 <%-- 	<table>
 		<thead>

@@ -72,6 +72,9 @@
 		<property name="maxInMemorySize" value="100000000"/>
 	</bean>
 	
+	
+	<!-- <beans:bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/> -->
+	
 	<!-- bean 등록 -->
 	<context:component-scan base-package="com.example.dao"></context:component-scan>
 	<context:component-scan base-package="com.example.service"></context:component-scan>

@@ -20,7 +20,7 @@ import kr.co.richardprj.service.GameService;
 
 @Controller
 public class GameController {
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 	
 	@Inject
 	private GameService gameService;
