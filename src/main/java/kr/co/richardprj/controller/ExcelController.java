@@ -104,9 +104,8 @@ public class ExcelController {
         if(iterator.hasNext()) {
             file = request.getFile(iterator.next());
         }
-        List<GameVO> list = excelService.uploadExcelFile(file);
+        int result = excelService.uploadExcelFile(file);
         
-        model.addAttribute("list", list);
-        return "jsonView";
+        return "excelDownloadView";
     }
 }

@@ -1,5 +1,6 @@
 package kr.co.richardprj.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -111,11 +113,13 @@ public class ExcelService {
     /**
      *업로드한 엑셀파일을 게임 리스트로 만들기
      */
-    public List<GameVO> uploadExcelFile(MultipartFile excelFile){
-        List<GameVO> list = new ArrayList<GameVO>();
+    public int uploadExcelFile(MultipartFile excelFile) {
+        //List<GameVO> list = new ArrayList<GameVO>();
+    	XSSFWorkbook workbook = null;
+    	
         try {
             OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
-            XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
+            workbook = new XSSFWorkbook(opcPackage);
             
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -131,20 +135,85 @@ public class ExcelService {
                 
                 // 행의 두번째 열(이름부터 받아오기) 
                 XSSFCell cell = row.getCell(1);
-                if(null != cell) game.setGameID((int)cell.getNumericCellValue());
+                
+                if(null != cell) game.setsDCd(cell.getStringCellValue());
+                
                 // 행의 세번째 열 받아오기
                 cell = row.getCell(2);
-                if(null != cell) game.setsDCd(cell.getStringCellValue());
-                // 행의 네번째 열 받아오기
-                cell = row.getCell(3);
-                if(null != cell) game.setMbrId(cell.getStringCellValue());
+                if(null != cell) {
+                	game.setMbrId(cell.getStringCellValue());
+                }else {
+                	continue;
+                }
                 
-                list.add(game);
+                cell = row.getCell(3);
+                if(null != cell) game.setMbrNm(cell.getStringCellValue());
+
+                // 행의 n번째 열 받아오기
+                cell = row.getCell(4);
+                if(null != cell) game.setTeamPlayerId(cell.getStringCellValue());
+                
+                
+                cell = row.getCell(5);
+                if(null != cell) game.setTeamPlayerNm(cell.getStringCellValue());
+
+                
+                cell = row.getCell(6);
+                if(null != cell) game.setoTeamPlayerId1(cell.getStringCellValue());
+                
+                
+                cell = row.getCell(7);
+                if(null != cell) game.setoTeamPlayerId2(cell.getStringCellValue());
+                
+                
+                cell = row.getCell(8);
+                if(null != cell) game.setoTeamPlayerNm1(cell.getStringCellValue());
+                
+                
+                cell = row.getCell(9);
+                if(null != cell) game.setoTeamPlayerNm2(cell.getStringCellValue());
+                
+                
+                cell = row.getCell(10);
+                if(null != cell) game.setWinLoseCd(cell.getStringCellValue());
+                
+                
+                cell = row.getCell(11);
+                if(null != cell) game.setOurScore((int)cell.getNumericCellValue());
+                
+                
+                cell = row.getCell(12);
+                if(null != cell) game.setOpponentScore((int)cell.getNumericCellValue());
+                
+                
+                cell = row.getCell(13);
+                if(null != cell) {
+                	cell.setCellType(CellType.STRING);
+                	game.setCourtNo(cell.getStringCellValue());
+                }
+                
+                cell = row.getCell(14);
+                if(null != cell) {
+                	cell.setCellType(CellType.STRING);
+                	game.setGameTime(cell.getStringCellValue());
+                }
+                
+                dao.insertGameResult(game);
+                
             }
+            workbook.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+        	if(workbook != null) {
+        		try {
+					workbook.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
-        return list;
+        return 0;
     }
 
 }

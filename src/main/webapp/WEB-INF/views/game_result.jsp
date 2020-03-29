@@ -33,26 +33,33 @@
 		//회원찾기 팝업
 		$('.member-btn').click(function(){
 			
-			openMemberList();
 			
-			$("#modal").show();
+			//openMemberList($(this));
 			
-			var id, nm = "test";
+			//$("#modal").show();
+			
+			//var id, nm = "test";
 			
 			//$(this).prev().val(nm);
 			//$(this).prev().prev().val(id);
 	    });
 		
-		$('.member1').click(function(){
-			alert($(this).children('h4'));
-		});
+// 		$('.member1').click(function(){
+// 			alert($(this).children('h4'));
+// 		});
 	});
+	
+	function selectPlayerf(id, nm, obj){
+		console.log(obj);
+		
+		
+	}
 
 	function closeModal() {
 		$('.searchModal').hide();
 	};
 
-	function openMemberList(){
+	function openMemberList(obj){
 		$.ajax({
 			url: "/memberList.do",
 		    type: "POST",
@@ -68,12 +75,13 @@
 					mbrid = result.members[i].mbrid;
 					mbrName = result.members[i].mbrName;
 					
-					innerHtml += "<div id='mbrid' style='display:none'>"+mbrid + "</div>";
 					innerHtml += "<div class='member1'>";
+					innerHtml += "<div id='mbrid' style='display:none'>"+mbrid + "</div>";
 					innerHtml += "<h4>" + mbrName+"</h4>";
 					innerHtml += "<div class='mbr-pic'>";
 					innerHtml += "    <img src='/resources/images/person.gif' width='100px' height='100px'>";
 					innerHtml += "</div>";
+					innerHtml += "<input type='button' value='선택' onclick=\"selectPlayer('"+mbrid+"','" + mbrName + "',"+obj+");\">";
 					innerHtml += "</div>";
                 	
 					$("#memberInfo").html(innerHtml);
@@ -195,30 +203,13 @@
 		width: 50%; /* Could be more or less, depending on screen size */
         height: 70%;
 	}
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-    }
+    .row { display: flex; flex-wrap: wrap; }
 
-    .flex-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content:flex-start;
-    }
-    .flex-col {
-        display: flex;
-        flex-direction: column;
-    }
+    .flex-row { display: flex; flex-wrap: wrap; justify-content:flex-start; }
+    .flex-col { display: flex; flex-direction: column; }
    
-    .member1 {
-        margin: 3px;
-        cursor: pointer;
-        /* background-color: blue; */
-    }
-    .member1 h4 {text-align: center; font-size: 13px; color: white; 
-    /* background-color: rgb(13, 66, 2); */
-    background-image: linear-gradient(green,yellow);
-    }
+    .member1 { margin: 3px; cursor: pointer; }
+    .member1 h4 {text-align: center; font-size: 13px; color: white; background-image: linear-gradient(green,yellow); }
 
     .close {margin-top:auto;}
 

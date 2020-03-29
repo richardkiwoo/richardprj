@@ -8,9 +8,6 @@
     <style>
     
     .container{
-    	width:700px; height:400px;
-    	margin : 0 auto;
-    	display: flex;
     	
     }
     
@@ -28,8 +25,8 @@
             contentType: false,
             type: "POST",
             success: function(data){
-                console.log(data);
-                document.getElementById('result').innerHTML = JSON.stringify(data);
+                if(data !=null)
+                	alert("등록완료!");
             }
         })
     }
