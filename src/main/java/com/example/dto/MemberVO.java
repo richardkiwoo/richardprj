@@ -38,7 +38,25 @@ public class MemberVO {
 	private String regDate ;
 	
 	private String cpPw ;
+	private String naverId;
+	private String googleId;
 	
+
+	public String getNaverId() {
+		return naverId;
+	}
+
+	public void setNaverId(String naverId) {
+		this.naverId = naverId;
+	}
+
+	public String getGoogleId() {
+		return googleId;
+	}
+
+	public void setGoogleId(String googleId) {
+		this.googleId = googleId;
+	}
 
 	public String getCpPw() {
 		return cpPw;

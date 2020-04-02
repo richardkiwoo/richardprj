@@ -21,6 +21,56 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- oauth login -->
+	<beans:bean id="naverClientID" class="java.lang.String">
+		<beans:constructor-arg value="N1Um93fpF9aE7g32wTgS" />
+	</beans:bean>
+	
+	<beans:bean id="naverClientSecret" class="java.lang.String">
+		<beans:constructor-arg value="6za1aT3_5X" />
+	</beans:bean>
+	
+	<beans:bean id="naverRedirectUrl" class="java.lang.String">
+		<beans:constructor-arg value="http://localhost:8090/auth/naver/callback" />
+	</beans:bean>
+	
+	<beans:bean id="naverSns" class="kr.co.richard.swp.auth.SnsValue">
+		<beans:constructor-arg value="naver" />
+		<beans:constructor-arg ref="naverClientID" />
+		<beans:constructor-arg ref="naverClientSecret" />
+		<beans:constructor-arg ref="naverRedirectUrl" />
+	</beans:bean>
+	
+	<beans:bean id="googleClientID" class="java.lang.String">
+		<beans:constructor-arg value="187161164464-eot5nb4nptun3mrv0samkiukj28g2uj1.apps.googleusercontent.com" />
+	</beans:bean>
+	
+	<beans:bean id="googleClientSecret" class="java.lang.String">
+		<beans:constructor-arg value="etll8yigZ0FiIKr4JEsRcTbb" />
+	</beans:bean>
+	
+	<beans:bean id="googleRedirectUrl" class="java.lang.String">
+		<beans:constructor-arg value="http://localhost:8090/auth/google/callback" />
+	</beans:bean>
+	
+	<beans:bean id="googleSns" class="kr.co.richard.swp.auth.SnsValue">
+		<beans:constructor-arg value="google" />
+		<beans:constructor-arg ref="googleClientID" />
+		<beans:constructor-arg ref="googleClientSecret" />
+		<beans:constructor-arg ref="googleRedirectUrl" />
+	</beans:bean>
+	
+	<beans:bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+		<beans:constructor-arg ref="googleClientID"/>
+		<beans:constructor-arg ref="googleClientSecret"/>
+	</beans:bean>
+	
+	<beans:bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email" />
+		<beans:property name="redirectUri" ref="googleRedirectUrl" />
+	</beans:bean>
+	
+	
 	
 	<context:component-scan base-package="com.example.controller, kr.co.richardprj.controller" />
 	

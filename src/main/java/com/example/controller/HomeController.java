@@ -31,6 +31,7 @@ public class HomeController {
 	public String home(Locale locale, Model model) throws Exception{
 
 		logger.info("home");
+
 		
 		//List<MemberVO> memberList = service.selectMember();
 		

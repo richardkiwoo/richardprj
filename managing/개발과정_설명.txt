@@ -258,3 +258,12 @@ lower_case_table_names = 1  <= 추가
 	 String UPLOAD_PATH = env.getProperty("upload.path");	 
 	 으로 사용하면 된다.
 
+
+-- 엑셀 파일 upload download
+기존에 file upload 기능에 엑셀 컨트롤 lib 추가해서 작성하면 된다.
+
+
+
+-- google auth 계정 (id/pwd)
+187161164464-eot5nb4nptun3mrv0samkiukj28g2uj1.apps.googleusercontent.com
+etll8yigZ0FiIKr4JEsRcTbb

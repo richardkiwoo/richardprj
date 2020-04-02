@@ -81,6 +81,12 @@ $(()=>{
 			what.focus();
 			//return false;
 		}
+		
+		///////////////////// sign in with sns ////////////////////
+		function signInWithSns(sns_url){
+			location.href=sns_url;
+			
+		} 
 
 </script>
 
@@ -89,8 +95,8 @@ $(()=>{
         <form class="form-signin" action="/login.do" onSubmit="return fn_checkForm();" method="post">
             <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
             <div class="social-login">
-                <button class="btn facebook-btn social-btn" type="button"><span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span> </button>
-                <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span> </button>
+                <button class="btn facebook-btn social-btn" type="button" onClick="signInWithSns('${naver_url}');"><span><i class="fab fa-facebook-f"></i> Sign in with Naver</span> </button>
+                <button class="btn google-btn social-btn" type="button" onClick="signInWithSns('${google_url}');"><span><i class="fab fa-google-plus-g"></i> Sign in with Google</span> </button>
             </div>
             <p style="text-align:center"> OR  </p>
             <input type="text" id="inputId" name="mbrid" class="form-control" placeholder="아이디를 입력하세요!" required="" autofocus="">
