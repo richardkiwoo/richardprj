@@ -85,7 +85,6 @@ $(()=>{
 		///////////////////// sign in with sns ////////////////////
 		function signInWithSns(sns_url){
 			location.href=sns_url;
-			
 		} 
 
 </script>

@@ -29,8 +29,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.dto.MemberVO;
 import com.example.service.MemberService;
 
-import kr.co.richard.swp.auth.SNSLogin;
-import kr.co.richard.swp.auth.SnsValue;
+import kr.co.richardprj.swp.auth.SNSLogin;
+import kr.co.richardprj.swp.auth.SnsValue;
 
 @Controller
 public class MemberController {
@@ -58,16 +58,18 @@ public class MemberController {
 		logger.info("snsLoginCallback : service={}", service);
 		SnsValue sns = null;
 		
-		if(StringUtils.equals("naver", service))
+		if(StringUtils.equalsIgnoreCase("naver", service))
 			sns = naverSns;
 		else
 			sns = googleSns;
 		//1. code를 이용해서 access_token 받기
 		//2. access_token을 이용해서 사용자 profile 정보 가져오기
+		SNSLogin snsLogin = new SNSLogin(sns);
+		
 		//3. DB 해당 유저가 존재하는지 체크 (googleid, naverid 컬럼 추가)
 		//4. 존재시 강제로그인, 미존재시 가입페이지로!! 
 		
-		SNSLogin snsLogin = new SNSLogin(sns);
+		
 		
 		MemberVO member = snsLogin.getUserProfile(code);
 		logger.info("Profile >>>"+ member);
@@ -124,10 +126,12 @@ public class MemberController {
 		
 		logger.info("snsLogin GET ....");
 		SNSLogin snsLogin = new SNSLogin(naverSns);
-		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		logger.info("111111111111111111111 ....");
+		model.addAttribute("naver_url", snsLogin.getSnsAuthURL());
+		logger.info("222222222222222 ....\n\n\n");
 		
-		SNSLogin googleLogin = new SNSLogin(googleSns);
-		model.addAttribute("google_url", googleLogin.getNaverAuthURL());
+//		SNSLogin googleLogin = new SNSLogin(googleSns);
+//		model.addAttribute("google_url", googleLogin.getSnsAuthURL());
 		
 		/* 구글code 발행을 위한 URL 생성 */
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
@@ -167,13 +171,15 @@ public class MemberController {
 	
 	@RequestMapping(value= "/snsLogin.do", method = RequestMethod.GET)
 	public  void snsLogin(Model model) throws Exception {
+		
 		logger.info("snsLogin GET ....");
 		
 		SNSLogin snsLogin = new SNSLogin(naverSns);
-		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
 		
-		SNSLogin googleLogin = new SNSLogin(googleSns);
-		model.addAttribute("google_url", googleLogin.getNaverAuthURL());
+		model.addAttribute("naver_url", snsLogin.getSnsAuthURL());
+		
+//		SNSLogin googleLogin = new SNSLogin(googleSns);
+//		model.addAttribute("google_url", googleLogin.getSnsAuthURL());
 		
 		/* 구글code 발행을 위한 URL 생성 */
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();

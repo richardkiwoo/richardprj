@@ -1,4 +1,4 @@
-package kr.co.richard.swp.auth;
+package kr.co.richardprj.swp.auth;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
@@ -13,9 +13,7 @@ public class NaverAPI20 extends DefaultApi20 implements SnsUrls{
 	}
 	
 	public static NaverAPI20 instance() {
-//		if(_instance == null) 
-//			_instance = new NaverAPI20();
-		
+
 		return InstanceHolder.INSTANCE;
 		 
 	}

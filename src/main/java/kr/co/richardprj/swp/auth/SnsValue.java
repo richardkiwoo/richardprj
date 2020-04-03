@@ -1,13 +1,11 @@
-package kr.co.richard.swp.auth;
+package kr.co.richardprj.swp.auth;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
-import lombok.Data;
 
-@Data
 public class SnsValue implements SnsUrls{
 	private String service;
 	private String clientId;
@@ -27,8 +25,8 @@ public class SnsValue implements SnsUrls{
 		this.clientSecret = clientSecret;
 		this.redirectUrl = redirectUrl;
 		
-		this.isNaver = StringUtils.equalsAnyIgnoreCase("naver", service);
-		this.isGoogle = StringUtils.equalsAnyIgnoreCase("gogole", service);
+		this.isNaver = StringUtils.equalsIgnoreCase("naver", service);
+		this.isGoogle = StringUtils.equalsIgnoreCase("google", service);
 		
 		if(isNaver) {
 			this.api20Instance = NaverAPI20.instance();

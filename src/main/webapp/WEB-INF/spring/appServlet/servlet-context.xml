@@ -34,7 +34,7 @@
 		<beans:constructor-arg value="http://localhost:8090/auth/naver/callback" />
 	</beans:bean>
 	
-	<beans:bean id="naverSns" class="kr.co.richard.swp.auth.SnsValue">
+	<beans:bean id="naverSns" class="kr.co.richardprj.swp.auth.SnsValue">
 		<beans:constructor-arg value="naver" />
 		<beans:constructor-arg ref="naverClientID" />
 		<beans:constructor-arg ref="naverClientSecret" />
@@ -53,7 +53,7 @@
 		<beans:constructor-arg value="http://localhost:8090/auth/google/callback" />
 	</beans:bean>
 	
-	<beans:bean id="googleSns" class="kr.co.richard.swp.auth.SnsValue">
+	<beans:bean id="googleSns" class="kr.co.richardprj.swp.auth.SnsValue">
 		<beans:constructor-arg value="google" />
 		<beans:constructor-arg ref="googleClientID" />
 		<beans:constructor-arg ref="googleClientSecret" />
