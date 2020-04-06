@@ -227,6 +227,9 @@
 		    <artifactId>spring-social-google</artifactId>
 		    <version>1.0.0.RELEASE</version>
 		</dependency>
+		
+		
+		
 		<!--  lombok -->
 		<!-- <dependency>
 		    <groupId>org.projectlombok</groupId>
@@ -242,7 +245,13 @@
 		    <version>3.10</version>
 		</dependency>
 						
-				
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.5.12</version>
+		</dependency>
+
+						
 
 	</dependencies>
 	

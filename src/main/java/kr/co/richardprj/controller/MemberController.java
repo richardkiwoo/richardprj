@@ -43,6 +43,9 @@ public class MemberController {
 	private SnsValue naverSns;
 	
 	@Inject
+	private SnsValue kakaoSns;
+	
+	@Inject
 	private SnsValue googleSns;
 	
 	@Inject
@@ -60,6 +63,8 @@ public class MemberController {
 		
 		if(StringUtils.equalsIgnoreCase("naver", service))
 			sns = naverSns;
+		else if(StringUtils.equalsIgnoreCase("kakao", service))
+			sns = kakaoSns;
 		else
 			sns = googleSns;
 		//1. code를 이용해서 access_token 받기
@@ -69,9 +74,13 @@ public class MemberController {
 		//3. DB 해당 유저가 존재하는지 체크 (googleid, naverid 컬럼 추가)
 		//4. 존재시 강제로그인, 미존재시 가입페이지로!! 
 		
+		MemberVO member ;
+		if(StringUtils.equalsIgnoreCase("kakao", service))
+			//member = snsLogin.getUserProfileKakao(code);
+			member = snsLogin.getUserProfile(code);
+		else
+			member = snsLogin.getUserProfile(code);
 		
-		
-		MemberVO member = snsLogin.getUserProfile(code);
 		logger.info("Profile >>>"+ member);
 		
 		model.addAttribute("member",member);
@@ -126,9 +135,10 @@ public class MemberController {
 		
 		logger.info("snsLogin GET ....");
 		SNSLogin snsLogin = new SNSLogin(naverSns);
-		logger.info("111111111111111111111 ....");
 		model.addAttribute("naver_url", snsLogin.getSnsAuthURL());
-		logger.info("222222222222222 ....\n\n\n");
+		
+		SNSLogin snsLogin_kakao = new SNSLogin(kakaoSns);
+		model.addAttribute("kakao_url", snsLogin_kakao.getSnsAuthURL());
 		
 //		SNSLogin googleLogin = new SNSLogin(googleSns);
 //		model.addAttribute("google_url", googleLogin.getSnsAuthURL());
@@ -169,14 +179,17 @@ public class MemberController {
 		return mav; 
 	}
 	
+	/* 안쓰는 메소드 */
 	@RequestMapping(value= "/snsLogin.do", method = RequestMethod.GET)
 	public  void snsLogin(Model model) throws Exception {
 		
 		logger.info("snsLogin GET ....");
 		
 		SNSLogin snsLogin = new SNSLogin(naverSns);
-		
 		model.addAttribute("naver_url", snsLogin.getSnsAuthURL());
+		
+		SNSLogin snsLogin_kakao = new SNSLogin(kakaoSns);
+		model.addAttribute("kakao_url", snsLogin_kakao.getSnsAuthURL());
 		
 //		SNSLogin googleLogin = new SNSLogin(googleSns);
 //		model.addAttribute("google_url", googleLogin.getSnsAuthURL());

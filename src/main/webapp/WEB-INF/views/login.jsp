@@ -97,6 +97,9 @@ $(()=>{
                 <button class="btn facebook-btn social-btn" type="button" onClick="signInWithSns('${naver_url}');"><span><i class="fab fa-facebook-f"></i> Sign in with Naver</span> </button>
                 <button class="btn google-btn social-btn" type="button" onClick="signInWithSns('${google_url}');"><span><i class="fab fa-google-plus-g"></i> Sign in with Google</span> </button>
             </div>
+            <div>
+            	<a href="${kakao_url }" ><img src="/resources/images/kakao_account_login_btn.png" width="200px"></a>
+            </div>
             <p style="text-align:center"> OR  </p>
             <input type="text" id="inputId" name="mbrid" class="form-control" placeholder="아이디를 입력하세요!" required="" autofocus="">
             <input type="password" id="inputPassword" name="mbrpw" class="form-control" placeholder="비밀번호를 입력하세요." required="">

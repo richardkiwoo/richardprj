@@ -21,7 +21,26 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<!-- oauth login -->
+	<!-- oauth login start -->
+	
+	<beans:bean id="kakaoClientID" class="java.lang.String">
+		<beans:constructor-arg value="5f32823249e41a3d3dad78786d22fb0b" />
+	</beans:bean>
+	<beans:bean id="kakaoClientSecret" class="java.lang.String">
+		<beans:constructor-arg value="U2Yn31cUhzYzJHAfNmytTMSCVn9LGVTH" />
+	</beans:bean>
+	<beans:bean id="kakaoRedirectUrl" class="java.lang.String">
+		<beans:constructor-arg value="http://localhost:8090/auth/kakao/callback" />
+	</beans:bean>
+	
+	<beans:bean id="kakaoSns" class="kr.co.richardprj.swp.auth.SnsValue">
+		<beans:constructor-arg value="kakao" />
+		<beans:constructor-arg ref="kakaoClientID" />
+		<beans:constructor-arg ref="kakaoClientSecret" />
+		<beans:constructor-arg ref="kakaoRedirectUrl" />
+	</beans:bean>
+	
+	
 	<beans:bean id="naverClientID" class="java.lang.String">
 		<beans:constructor-arg value="N1Um93fpF9aE7g32wTgS" />
 	</beans:bean>
@@ -70,7 +89,7 @@
 		<beans:property name="redirectUri" ref="googleRedirectUrl" />
 	</beans:bean>
 	
-	
+	<!-- oauth login end -->
 	
 	<context:component-scan base-package="com.example.controller, kr.co.richardprj.controller" />
 	

@@ -8,5 +8,9 @@ public interface SnsUrls {
 	static final String GOOGLE_PROFILE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 	// 아래 거는 안되는거임. 위에걸로 변경함.
 	//static final String GOOGLE_PROFILE_URL = "https://www.googleapis.com/plus/v1/people.me";
-	//static final String KAKAO_ACCESS_TOKEN ="";
+	
+	static final String KAKAO_PROFILE_URL = "https://kapi.kakao.com/v2/user/me";
+	static final String KAKAO_ACCESS_TOKEN = "https://kauth.kakao.com/oauth/token";
+	static final String KAKAO_AUTH = "https://kauth.kakao.com/oauth/authorize";
+	
 }
