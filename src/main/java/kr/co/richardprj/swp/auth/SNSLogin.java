@@ -19,6 +19,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.example.dto.MemberVO;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,27 +32,23 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
+import kr.co.richardprj.controller.MemberController;
+
 public class SNSLogin {
 	
 	private OAuth20Service oauthService;
 	
-//	private OAuth20Service oauthServiceKakao;
-	
 	private SnsValue sns;
-	 
+	
+	private static final Logger logger = LoggerFactory.getLogger(SNSLogin.class);
 	
 	public SNSLogin(SnsValue sns) {
 		
 		this.oauthService = new ServiceBuilder(sns.getClientId())
 				.apiSecret(sns.getClientSecret())
 				.callback(sns.getRedirectUrl())
-				.scope("profile") //Basic_Profile
+//				.setScope("profile") //Basic_Profile
 				.build(sns.getApi20Instance());
-		
-//		this.oauthServiceKakao = new ServiceBuilder(sns.getClientId())
-//				.apiKey(sns.getClientSecret())
-//				.callback(sns.getRedirectUrl())
-//				.scope("Basic_Profile").build(sns.getApi20Instance());
 
 		this.sns = sns;
 	}
@@ -60,28 +58,19 @@ public class SNSLogin {
 	}
 	
 	public MemberVO getUserProfile(String code) throws Exception {
-		System.out.println("0000000000000000 code =====" + code);
-		System.out.println("!!!!!!!!!" + oauthService.getApiKey());
-		System.out.println("22222222222" + oauthService.getApiSecret());
-		System.out.println("33333333333" + oauthService.getAuthorizationUrl());
-		System.out.println("4444444444" + oauthService.getCallback());
-		
-		String access_token_json = getAccessTokenForKakao(code);
-		System.out.println("55555555555555555 access_token_json=== " + access_token_json);
-		
-		MemberVO membervo = getUserProfileKakao(access_token_json);
-		System.out.println("66666666666 membervo=== " + membervo.toString());
-		
-//		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
-//		System.out.println("accessToken : " + accessToken.getAccessToken());
+//		String access_token_json = getAccessTokenForKakao(code);
 //		
-//		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
-//		oauthService.signRequest(accessToken, request);
-//		
-//		Response response = oauthService.execute(request);
+//		MemberVO membervo = getUserProfileKakao(access_token_json);
 		
-		//return parseJson(response.getBody());
-		return new MemberVO();
+		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
+		OAuthRequest request = new OAuthRequest(Verb.GET, this.sns.getProfileUrl());
+		oauthService.signRequest(accessToken, request);
+		
+		Response response = oauthService.execute(request);
+		logger.info("respose body is {}", response.getBody());
+		
+		return parseJson(response.getBody());
+//		return new MemberVO();
 		
 	}
 	
@@ -306,68 +295,6 @@ public class SNSLogin {
 		
 		return member; 
 	}
-	
-	
-	public String getAccessToken (String authorize_code) {
-        String access_Token = "";
-        String refresh_Token = "";
-        String reqURL = "https://kauth.kakao.com/oauth/token";
-        
-        try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            
-            //    POST 요청을 위해 기본값이 false인 setDoOutput을 true로
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-            
-            //    POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            StringBuilder sb = new StringBuilder();
-            sb.append("grant_type=authorization_code");
-            sb.append("&client_id=5f32823249e41a3d3dad78786d22fb0b");
-            sb.append("&redirect_uri=http://localhost:8090/auth/kakao/callback");
-            sb.append("&code=" + authorize_code);
-            bw.write(sb.toString());
-            bw.flush();
-            
-            //    결과 코드가 200이라면 성공
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
- 
-            //    요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = "";
-            String result = "";
-            
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-            System.out.println("response body : " + result);
-            
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode = mapper.readTree(result);
-            JsonNode resNode = rootNode.get("response");
-            access_Token = resNode.get("access_token").asText();
-            //    Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-//            JsonParser parser = new JsonParser();
-//            JsonElement element = parser.parse(result);
-//            
-//            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-//            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-//            
-//            System.out.println("access_Token : " + access_Token);
-//            System.out.println("refresh_token : " + refresh_Token);
-            
-            br.close();
-            bw.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } 
-        
-        return access_Token;
-    }
 	
 	
 }

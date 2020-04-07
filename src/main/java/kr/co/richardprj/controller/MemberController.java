@@ -54,6 +54,14 @@ public class MemberController {
 	@Inject 
 	private OAuth2Parameters googleOAuth2Parameters;
 	
+	/*
+	 * SNS Login을 위한 메소드
+	 * 1. servlet-context에 구글, 네이버 설정정보를 기입하고 inject 받아서 사용한다.
+	 * 2. SnsUrls에는 url을 가지고 있고, SnsValue파일은 VO와 같은 역할을 한다.
+	 * 3. SNSLogin 에서 scribejava 가 code값을 받아서 access token을 받아서 재차 user profile을 받아오는 기능을 한다.
+	 * 4. 받아온 json 데이터를 회원가입 시키거나, 로그인 처리 한다.
+	 * 5. 카카오는 scribejava가 오류나서 개별로 개발하여 처리한다.
+	 */
 	@RequestMapping(value="/auth/{service}/callback", method= {RequestMethod.GET, RequestMethod.POST})
 	public String snsLoginCallback(@PathVariable String service, 
 			Model model, @RequestParam String code) throws Exception {
@@ -76,8 +84,7 @@ public class MemberController {
 		
 		MemberVO member ;
 		if(StringUtils.equalsIgnoreCase("kakao", service))
-			//member = snsLogin.getUserProfileKakao(code);
-			member = snsLogin.getUserProfile(code);
+			member = snsLogin.getUserProfileKakao(code);
 		else
 			member = snsLogin.getUserProfile(code);
 		
