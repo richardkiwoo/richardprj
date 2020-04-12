@@ -67,7 +67,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">코딩 부스트</a>
+				<a class="navbar-brand" href="/">RICHARD</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -115,7 +115,7 @@
 	<div class="container">
 		<div class="jumbotron">
 			<h1 class="text-center">Richard를 소개합니다.</h1>
-			<p class="text-center">코딩부스터는 IT교육 사이트입니다. 다양한 환경...</p>
+			<p class="text-center">Richard IT교육 사이트입니다. 다양한 환경...</p>
 			<p class="text-center"><a class="btn btn-primary btn-lg" href="#">강의 들으러 가기</a></p>
 		</div>
 	</div>
@@ -134,35 +134,11 @@
     <input type="submit" value="업로드">
 </form>
 
-
-
-		<h2><a href="/downloadFileList.do">다운로드 파일목록</a></h2>
-		
-		<h2><a href="/game.do">게임 결과 입력</a></h2>
-		
-		<h2><a href="/excelDownloadUpload.do">게임결과 엑셀 다운로드</a></h2>
-		
-		<h2><a href="/kakaoLoginHome.do">카카오 계정으로 로그인</a></h2>
-
-<%-- 	<table>
-		<thead>
-			<tr>
-				<th>아이디</th>
-				<th>비밀번호</th>
-				<th>이름</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${memberList}" var="member">
-				<tr>
-					<td>${member.id}</td>
-					<td>${member.pw}</td>
-					<td>${member.name}</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
- --%>
+	<h2><a href="/downloadFileList.do">다운로드 파일목록</a></h2>
+	
+	<h2><a href="/game.do">게임 결과 입력</a></h2>
+	
+	<h2><a href="/excelDownloadUpload.do">게임결과 엑셀 다운로드</a></h2>
 
 </body>
 </html>

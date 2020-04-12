@@ -91,6 +91,27 @@
 	
 	<!-- oauth login end -->
 	
+	
+	<!-- auth interceptor -->
+	<beans:bean id="loginInterceptor" class="kr.co.richardprj.swp.interceptor.LoginInterceptor" />
+	<beans:bean id="authInterceptor" class="kr.co.richardprj.swp.interceptor.AuthInterceptor" />
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/login.do"/>
+			<mapping path="/auth/**"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/game.do"/>
+			<mapping path="/downloadFileList.do"/>
+			<mapping path="/fileupload.do"/>
+			<mapping path="/excelDownloadUpload.do"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>	
+	
+	
 	<context:component-scan base-package="com.example.controller, kr.co.richardprj.controller" />
 	
 

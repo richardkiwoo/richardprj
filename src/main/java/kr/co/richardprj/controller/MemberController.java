@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,13 +26,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 import com.example.dto.MemberVO;
 import com.example.service.MemberService;
 
-import kr.co.richardprj.swp.auth.SNSLogin;
+import kr.co.richardprj.service.SnsLoginService;
 import kr.co.richardprj.swp.auth.SnsValue;
+import kr.co.richardprj.swp.interceptor.SessionNames;
 
 @Controller
 public class MemberController {
@@ -38,6 +41,9 @@ public class MemberController {
 	
 	@Inject
 	private MemberService memberService;
+	
+	@Inject
+	private SnsLoginService snsLoginService;
 	
 	@Inject
 	private SnsValue naverSns;
@@ -51,8 +57,31 @@ public class MemberController {
 	@Inject
 	private GoogleConnectionFactory googleConnectionFactory;
 	
-	@Inject 
+	@Inject
 	private OAuth2Parameters googleOAuth2Parameters;
+	
+	/*
+	 * login page view and set sns urls.
+	 */
+	@RequestMapping(value = "/loginPage.do", method = RequestMethod.GET)
+	public String loginPage(Model model) throws Exception {
+		
+		logger.info("snsLogin GET ....");
+		//SNSLogin_delete snsLogin = new SNSLogin_delete(naverSns);
+		model.addAttribute("naver_url", snsLoginService.getSnsUrls(naverSns));
+		model.addAttribute("kakao_url", snsLoginService.getSnsUrls(kakaoSns));
+		
+		//google은 다른방식으로 url 가져온다.
+//		SNSLogin googleLogin = new SNSLogin(googleSns);
+//		model.addAttribute("google_url", googleLogin.getSnsAuthURL());
+		
+		/* 구글code 발행을 위한 URL 생성 */
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
+		model.addAttribute("google_url",url);
+		
+		return "login";
+	}
 	
 	/*
 	 * SNS Login을 위한 메소드
@@ -63,36 +92,41 @@ public class MemberController {
 	 * 5. 카카오는 scribejava가 오류나서 개별로 개발하여 처리한다.
 	 */
 	@RequestMapping(value="/auth/{service}/callback", method= {RequestMethod.GET, RequestMethod.POST})
-	public String snsLoginCallback(@PathVariable String service, 
-			Model model, @RequestParam String code) throws Exception {
+	@ResponseBody
+	public void snsLoginCallback(@PathVariable String service, 
+			Model model, @RequestParam String code, HttpSession sess) throws Exception {
 		
 		logger.info("snsLoginCallback : service={}", service);
 		SnsValue sns = null;
-		
 		if(StringUtils.equalsIgnoreCase("naver", service))
 			sns = naverSns;
-		else if(StringUtils.equalsIgnoreCase("kakao", service))
-			sns = kakaoSns;
-		else
+		else if(StringUtils.equalsIgnoreCase("google", service))
 			sns = googleSns;
+		else
+			sns = kakaoSns;
 		//1. code를 이용해서 access_token 받기
 		//2. access_token을 이용해서 사용자 profile 정보 가져오기
-		SNSLogin snsLogin = new SNSLogin(sns);
 		
 		//3. DB 해당 유저가 존재하는지 체크 (googleid, naverid 컬럼 추가)
 		//4. 존재시 강제로그인, 미존재시 가입페이지로!! 
 		
-		MemberVO member ;
+		MemberVO member = null ;
+		
 		if(StringUtils.equalsIgnoreCase("kakao", service))
-			member = snsLogin.getUserProfileKakao(code);
-		else
-			member = snsLogin.getUserProfile(code);
+			member = snsLoginService.getUserProfileKakao(code);
+		else {
+			member = snsLoginService.getSnsUserProfile(sns,code);
+		}
 		
-		logger.info("Profile >>>"+ member);
+		if ( member != null) {
+			sess.setAttribute("loginInfo", member);
+			model.addAttribute("member", member);
+			model.addAttribute("result", "Contratulatuons!");
+		}else {
+			model.addAttribute("result", "Sorry! there's error has occurred when login!");
+		}
 		
-		model.addAttribute("member",member);
-		
-		return "loginResult";
+		//return "redirect:/";
 	}
 	
 	
@@ -137,85 +171,50 @@ public class MemberController {
         return map;
 	}
 	
-	@RequestMapping(value = "/loginPage.do", method = RequestMethod.GET)
-	public String loginPage(Model model) {
-		
-		logger.info("snsLogin GET ....");
-		SNSLogin snsLogin = new SNSLogin(naverSns);
-		model.addAttribute("naver_url", snsLogin.getSnsAuthURL());
-		
-		SNSLogin snsLogin_kakao = new SNSLogin(kakaoSns);
-		model.addAttribute("kakao_url", snsLogin_kakao.getSnsAuthURL());
-		
-//		SNSLogin googleLogin = new SNSLogin(googleSns);
-//		model.addAttribute("google_url", googleLogin.getSnsAuthURL());
-		
-		/* 구글code 발행을 위한 URL 생성 */
-		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
-		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
-		model.addAttribute("google_url",url);
-		
-		return "login";
-	}
 	
 	@RequestMapping(value= "/login.do", method = RequestMethod.POST)
-	public  ModelAndView login(HttpServletRequest req, MemberVO member ) throws Exception {
-		
-		ModelAndView mav = new ModelAndView();
+	public  void login(HttpServletRequest req, MemberVO member, Model model ) throws Exception {
 		
 		MemberVO mem = memberService.login(member);
 		if(mem == null) {
 			String msg = "사용자가 없습니다";
-			mav.addObject("msg", msg);
-			mav.setViewName("login");
+			model.addAttribute("mgs", msg);
 		}else {
 			logger.info("memberid==="+mem.getMbrName());
 			
 			BCryptPasswordEncoder scpwd = new BCryptPasswordEncoder();
 			if (scpwd.matches(member.getMbrpw(), mem.getMbrpw())) {
 				req.getSession().setAttribute("loginInfo", mem);
-				mav.setViewName("home");
+				model.addAttribute("member", mem);
+
 			}else {
-				String msg = "비빌번호가 틀렸습니다.";
-				mav.addObject("msg", msg);
-				mav.setViewName("login");
+				model.addAttribute("mgs", "비빌번호가 틀렸습니다.");
 			}
 			
 		}
 		
-		return mav; 
-	}
-	
-	/* 안쓰는 메소드 */
-	@RequestMapping(value= "/snsLogin.do", method = RequestMethod.GET)
-	public  void snsLogin(Model model) throws Exception {
-		
-		logger.info("snsLogin GET ....");
-		
-		SNSLogin snsLogin = new SNSLogin(naverSns);
-		model.addAttribute("naver_url", snsLogin.getSnsAuthURL());
-		
-		SNSLogin snsLogin_kakao = new SNSLogin(kakaoSns);
-		model.addAttribute("kakao_url", snsLogin_kakao.getSnsAuthURL());
-		
-//		SNSLogin googleLogin = new SNSLogin(googleSns);
-//		model.addAttribute("google_url", googleLogin.getSnsAuthURL());
-		
-		/* 구글code 발행을 위한 URL 생성 */
-		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
-		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
-		model.addAttribute("google_url",url);
-		
-		
+		//return mav; 
 	}
 	
 	
-
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET)
-	public String handleRequestlogout(MemberVO memberVO, Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+	public String handleRequestlogout(Model model, 
+			HttpServletRequest request,HttpSession sess,
+			HttpServletResponse response) {
 
-		HttpSession sess = request.getSession(false);
-		request.getSession(true).invalidate();
+		//HttpSession sess = request.getSession(false);
+		//request.getSession(true).invalidate();
+		sess.invalidate();
+		model.addAttribute("result", "Logout successfully!");
+		
+		//cookie 제거
+		Cookie loginCookie = WebUtils.getCookie(request, SessionNames.LOGIN);
+		if (loginCookie != null) {
+			loginCookie.setPath("/");
+			loginCookie.setMaxAge(0);
+			
+			response.addCookie(loginCookie);
+		}
 	
 		return "home";
 

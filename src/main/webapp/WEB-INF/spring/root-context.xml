@@ -80,6 +80,6 @@
 	<context:component-scan base-package="com.example.service"></context:component-scan>
 	<context:component-scan base-package="kr.co.richardprj.dao"></context:component-scan>
 	<context:component-scan base-package="kr.co.richardprj.service"></context:component-scan>
-	<!-- <context:component-scan base-package="kr.co.richardprj.swp.auth"></context:component-scan> -->
+	<context:component-scan base-package="kr.co.richardprj.swp.auth"></context:component-scan>
 	
 </beans>

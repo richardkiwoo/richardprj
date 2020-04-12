@@ -27,14 +27,8 @@ public class GameController {
 	
 	@RequestMapping(value = "/game.do", method = RequestMethod.GET)
 	public String game(HttpSession  sess, Model model) throws Exception {
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject(attributeName, attributeValue)
-		
-		String page = "game_result";
-		if (sess.getAttribute("loginInfo") == null)
-			page = "redirect:/";
-		model.addAttribute("loginInfo", sess.getAttribute("loginInfo"));
-		return page;
+
+		return "game_result";
 	}
 	
 	@RequestMapping(value = "/gameList.do", method = RequestMethod.GET)

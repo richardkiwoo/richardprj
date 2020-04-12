@@ -29,23 +29,36 @@
 			mbrEmail,
 			mbrName,
 			mbrMobile,
-			regDate
+			regDate,
+			kakaoId,
+			naverId,
+			googleId,
+			nikname,
+			birthdate,
+			gender	
 		)VALUES( 
 			#{mbrid},
 			#{mbrpw},
 			#{mbrEmail},
 			#{mbrName},
 			#{mbrMobile},
-			sysdate()
+			sysdate(),
+			#{kakaoId},
+			#{naverId},
+			#{googleId},
+			#{nikname},
+			#{birthdate},
+			#{gender}
 		)
 	</insert>
 
 	<select id="selectMembers" parameterType="memberVO" resultType="memberVO">
 		SELECT *
 		FROM MEMBER
+		WHERE 1 = 1
 		<choose>
 			<when test="mbrid != '' and mbrid != null">
-				WHERE mbrid = #{mbrid}
+				AND mbrid = #{mbrid}
 			</when>
 		</choose>
 	</select>
