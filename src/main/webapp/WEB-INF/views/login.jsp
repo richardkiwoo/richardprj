@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,16 +10,17 @@
 
 <title>로그인</title>
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" >
-<!-- <link rel="stylesheet" href="/style.css"> -->
-
+<link rel="stylesheet" href="resources/css/bootstrap.css">
+<link rel="stylesheet" href="resources/css/style.css">
 <!-- login css -->
-<link href="resources/css/customized/login.css" rel="stylesheet">
+<link rel="stylesheet" href="resources/css/customized/login.css" rel="stylesheet">
+
 
 </head>
 
@@ -90,6 +93,9 @@ $(()=>{
 </script>
 
 <body>
+
+<%@ include file="/WEB-INF/views/header.jsp" %>
+
     <div id="logreg-forms">
         <form class="form-signin" action="/login.do" onSubmit="return fn_checkForm();" method="post">
             <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
@@ -138,5 +144,6 @@ $(()=>{
         <br>
     </div>
 
+<%@ include file="/WEB-INF/views/footer.jsp" %>
 </body>
 </html>

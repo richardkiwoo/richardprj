@@ -267,3 +267,34 @@ lower_case_table_names = 1  <= 추가
 -- google auth 계정 (id/pwd)
 187161164464-eot5nb4nptun3mrv0samkiukj28g2uj1.apps.googleusercontent.com
 etll8yigZ0FiIKr4JEsRcTbb
+
+--lombok 사용 (eclipse)
+1. mvn repository에서 lib를 다운받도록 pom에 처리한다.
+2. .m2 폴더 아래에 다운받아진 경로로 cmd에서 java -jar lombok1.8.0.jar 를 실행해서 eclipse.exe 위치를 선택한다. 
+3. VO java파일에서 @Data 를 하면 setter, getter가 자동으로 outline에 표시된다.
+
+--로그인 Interceptor, 권한 interceptor 처리
+1. servlet-context.xml 에서 아래와 같이 빈등록을 한다.
+  - 빈 id와 class를 지정해 주고, interceptor를 설정한다.
+  - login 할 때 mapping 은 login이 일어나는 경로, sns로그인이 일어나는 경로에서 처리한다.
+  - 권한 mapping은 로그인이 필요한 페이지를 호출 한 경우를 등록한다.
+	<!-- auth interceptor -->
+	<beans:bean id="loginInterceptor" class="kr.co.richardprj.swp.interceptor.LoginInterceptor" />
+	<beans:bean id="authInterceptor" class="kr.co.richardprj.swp.interceptor.AuthInterceptor" />
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/login.do"/>
+			<mapping path="/auth/**"/>  
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/game.do"/>
+			<mapping path="/downloadFileList.do"/>
+			<mapping path="/fileupload.do"/>
+			<mapping path="/excelDownloadUpload.do"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>	
+
+2. LoginInterceptor.java, AuthInterceptor.java를 생성하고, HandlerInterceptorAdapter 를 extends한다.

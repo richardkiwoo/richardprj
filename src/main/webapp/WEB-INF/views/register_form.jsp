@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
     <head>
@@ -25,6 +27,7 @@
         <!-- <script src="../plugin/bootstrap/js/bootstrap.min.js"></script>
         <script src="../config/js/join.js"></script> -->
     </head>
+	<link rel="stylesheet" href="resources/css/style.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<script>
@@ -137,6 +140,8 @@
 	</script>
 
     <body>
+<%@ include file="/WEB-INF/views/header.jsp" %>
+    
         <article class="container">
             <div class="page-header">
                 <div class="col-md-6 col-md-offset-3">
@@ -196,5 +201,7 @@
             </div>
 
         </article>
+<%@ include file="/WEB-INF/views/footer.jsp" %>
+
     </body>
 </html>

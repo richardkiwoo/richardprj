@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.richardprj.mapper.boardMapper">
+	
+	<select id="getPostList" parameterType="postVO" resultType="postVO">
+
+		SELECT
+
+			BID, CATE_CD, TITLE, CONTENT, TAG, VIEW_CNT, REG_ID, REG_DT, EDIT_DT
+
+		FROM Post
+		LIMIT #{startList}, #{listSize}
+
+	</select>
+
+
+	<select id="selectMember" parameterType="memberVO"
+		resultType="memberVO">
+		SELECT ID, PW ,NAME FROM TEST
+	</select>
+	
+	
+	<insert id="registerMember" parameterType="memberVO">
+
+	</insert>
+
+	<select id="selectMembers" parameterType="memberVO" resultType="memberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE 1 = 1
+		<choose>
+			<when test="mbrid != '' and mbrid != null">
+				AND mbrid = #{mbrid}
+			</when>
+		</choose>
+	</select>
+	
+</mapper>
