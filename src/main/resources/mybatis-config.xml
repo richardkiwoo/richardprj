@@ -8,6 +8,14 @@
 			<typeAlias type="com.example.dto.MemberVO" alias="memberVO"/>
 			<typeAlias type="kr.co.richardprj.dto.FileVO" alias="fileVO"/>
 			<typeAlias type="kr.co.richardprj.dto.GameVO" alias="gameVO"/>
+			
+			<typeAlias type="kr.co.richardprj.dto.board.BoardVO" alias="boardVO"/>
+			<typeAlias type="kr.co.richardprj.dto.board.PostVO" alias="postVO"/>
+			<typeAlias type="kr.co.richardprj.dto.board.ContentsVO" alias="contentsVO"/>
+			<typeAlias type="kr.co.richardprj.dto.board.ReplyVO" alias="replyVO"/>
+			<typeAlias type="kr.co.richardprj.dto.board.RecommendVO" alias="recommendVO"/>
+			<typeAlias type="kr.co.richardprj.dto.board.AttachFileVO" alias="attachFileVO"/>
+			<typeAlias type="kr.co.richardprj.dto.board.PaginationVO" alias="paginationVO"/>
 		</typeAliases>
 		
 	</configuration>
