@@ -19,4 +19,6 @@ public class PostVO {
 	private String regIp       ;
 	private String contents;
 	private int  recommendCnt;
+	private int replyCnt;
+	private PaginationVO pagination ;
 }

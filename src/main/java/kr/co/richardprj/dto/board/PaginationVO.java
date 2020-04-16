@@ -22,15 +22,15 @@ public class PaginationVO {
 		this.range = range;
 		this.listCnt = listCnt;		
 
-		//전체 페이지수
-		this.pageCnt = (int) Math.ceil(listCnt/listSize);
+		//전체 페이지수 int/int == int가 되서 올림할 수 없다.그래서 float해서 ceil해야 올림할 수있다.
+		this.pageCnt = (int) Math.ceil((float)listCnt/listSize);
 		
 		//시작 페이지
 		this.startPage = (range - 1) * rangeSize + 1 ;
 
 		//끝 페이지
 		this.endPage = range * rangeSize;
-
+		
 		//게시판 시작번호
 		this.startList = (page - 1) * listSize;
 

@@ -52,6 +52,11 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return sqlSession.selectList(Namespace+".selectPostList", post);
 	}
+	
+	@Override
+	public int selectPostListCnt(PostVO post) throws Exception {
+		return sqlSession.selectOne(Namespace+".selectPostListCnt", post);
+	}
 
 	@Override
 	public PostVO selectPost(PostVO post) throws Exception {
@@ -154,6 +159,8 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return sqlSession.delete(Namespace+".deleteAttachFile", af);
 	}
+
+	
 
 	
 }

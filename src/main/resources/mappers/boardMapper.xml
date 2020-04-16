@@ -5,21 +5,31 @@
 
 <mapper namespace="kr.co.richardprj.mapper.boardMapper">
 	
-	<select id="getPostList" parameterType="postVO" resultType="postVO">
+	<select id="selectPostList" parameterType="postVO" resultType="postVO">
 
-		SELECT
-
-			BID, CATE_CD, TITLE, CONTENT, TAG, VIEW_CNT, REG_ID, REG_DT, EDIT_DT
-
-		FROM Post
-		LIMIT #{startList}, #{listSize}
+		select 
+			a.boardId,
+			a.postNo,
+			max(a.postTitle) postTitle,
+			a.writer,
+			a.modDate,
+			a.readCnt, 
+			ifnull(sum(b.replyNo), 0) as replyCnt,
+			ifnull(sum(c.likeNo), 0) as recommendCnt
+		from post a 
+		left outer join reply b on (a.boardId = b.boardId and a.postNo = b.postNo)
+		left outer join recommend c on (a.boardId = b.boardId and c.postNo = c.postNo)
+		where a.boardId = #{boardId}
+		group by a.boardId, a.postNo, a.writer, a.modDate, a.readCnt
+		order by postNo
+		LIMIT #{pagination.startList}, #{pagination.listSize}
 
 	</select>
 
 
-	<select id="selectMember" parameterType="memberVO"
-		resultType="memberVO">
-		SELECT ID, PW ,NAME FROM TEST
+	<select id="selectPostListCnt" parameterType="postVO" resultType="int">
+		SELECT count(*) from post
+		where boardId = #{boardId}
 	</select>
 	
 	

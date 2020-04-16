@@ -20,6 +20,7 @@ public interface BoardDAO {
 	/** 게시글 **/
 	public List<PostVO> selectPostList(PostVO post) throws Exception;
 	public PostVO selectPost(PostVO post) throws Exception;
+	public int selectPostListCnt(PostVO post) throws Exception ;
 	public int insertPost(PostVO post) throws Exception ;
 	public int updatePost(PostVO post) throws Exception;
 	public int deltePost(PostVO post) throws Exception;
