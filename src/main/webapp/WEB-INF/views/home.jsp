@@ -9,33 +9,20 @@
 	<title>Home</title>
 	<link rel="stylesheet" href="resources/css/bootstrap.css">
 	<link rel="stylesheet" href="resources/css/style.css">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<!-- 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     
 	
 	<style type="text/css">
-	.jumbotron {
-		background-image: url('/resources/images/jumbotronBackground.jpg');
-		background-size: cover;
-		text-shadow: black 0.2em 0.2em 0.2em;
-		color: white;
-	}
-	
+	.jumbotron { background-image: url('/resources/images/jumbotronBackground.jpg'); background-size: cover; text-shadow: black 0.2em 0.2em 0.2em; color: white; }
 	.dropdown:hover .dropdown-menu {display: block;}
 	</style>
+
 	<script type="text/javascript">
 	function logout(){
 		location.href="/logout.do";
 	}
-	
-	// file upload 를 위한 메소드
-//     $(document).ready(function () {
-//         if(${not empty result}){
-//             alert('${result} 파일 저장 성공');
-//         } else {
-//             alert('파일 저장 실패');
-//         }
-//     });
 	
     $(function(){
         var responseMessage = "${result}";

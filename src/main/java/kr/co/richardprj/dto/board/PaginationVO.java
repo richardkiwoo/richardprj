@@ -6,8 +6,8 @@ import lombok.Data;
 public class PaginationVO {
 	private int listSize = 10;             //초기값으로 목록개수를 10으로 셋팅
 	private int rangeSize = 10;            //초기값으로 페이지범위를 10으로 셋팅
-	private int page;
-	private int range;
+	private int page;  //현재페이지
+	private int range; 
 	private int listCnt;
 	private int pageCnt;
 	private int startPage;

@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="resources/css/bootstrap.css">
 	<link rel="stylesheet" href="resources/css/style.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
     
 	
 	<style type="text/css">
@@ -26,7 +26,7 @@
 			var url = "${pageContext.request.contextPath}/postList.do";
 			url = url + "?page=" + page;
 			url = url + "&range=" + range;
-			url = url + "&boardId=1";
+			url = url + "&boardId=${boardId}";
 			location.href = url;
 
 		}
@@ -38,12 +38,10 @@
 			var url = "${pageContext.request.contextPath}/postList.do";
 			url = url + "?page=" + page;
 			url = url + "&range=" + range;
-			url = url + "&boardId=1";
+			url = url + "&boardId=${boardId}";
 			location.href = url;	
 
 		}
-
-
 
 		//다음 버튼 이벤트
 
@@ -55,8 +53,21 @@
 			var url = "${pageContext.request.contextPath}/postList.do";
 			url = url + "?page=" + page;
 			url = url + "&range=" + range;
-			url = url + "&boardId=1";
+			url = url + "&boardId=${boardId}";
 			location.href = url;
+		}
+		
+		
+		function goView(postno){
+			$("#frm").attr("action", "/article.do");
+			$("#frm").method = "post";
+			$("input[type=hidden][name=postNo]").val(postno);
+			$("#frm").submit();
+		}
+		function goWrite(postno){
+			$("#frm").attr("action", "/postWrite.do");
+			$("#frm").method = "post";
+			$("#frm").submit();
 		}
 
 	</script>
@@ -67,7 +78,12 @@
 
 <div class="container">
   <h2>Basic Board</h2>
-  <p>board type 1</p>            
+  <p>board type 1</p>
+  <form name="frm" id="frm" method="post" action="">
+  	<input type="hidden" name="boardId" value="${boardId }">
+  	<input type="hidden" name="postNo" value="-1">
+  	<input type="hidden" name="page" value="${pagination.page }">
+  </form>             
   <table class="table">
     <thead>
       <tr>
@@ -83,7 +99,7 @@
     <c:forEach var="postVO" items="${postList}" >
       <tr>
         <td><c:out value="${postVO.postNo}" /></td>
-        <td><c:out value="${postVO.postTitle}" /></td>
+        <td><a href="#" onclick="javascript:goView(${postVO.postNo})"><c:out value="${postVO.postTitle}" /></a></td>
         <td><c:out value="${postVO.writer}" /></td>
         <td><c:out value="${postVO.modDate}" /></td>
         <td><c:out value="${postVO.recommendCnt}" /></td>
@@ -95,8 +111,15 @@
 </div>
 
 	<!-- pagination{s} -->
-
-	<div  class="container">
+<div class="row">
+	<div class="container col-sm-2">
+		<ul  class="pagination navbar-right">
+		<li>
+		<a href="#" onClick="javascript:goWrite();" class="btn btn-info" role="button">글쓰기</a>
+		</li>
+		</ul>
+	</div>
+	<div  class="container col-sm-4">
 
 		<ul class="pagination">
 			<c:if test="${pagination.prev}">
@@ -111,6 +134,7 @@
 		</ul>
 
 	</div>
+</div>	
 		<!-- pagination{e} -->
 		
 

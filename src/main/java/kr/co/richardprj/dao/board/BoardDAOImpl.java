@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.richardprj.dto.board.AttachFileVO;
 import kr.co.richardprj.dto.board.BoardVO;
+import kr.co.richardprj.dto.board.ContentsVO;
 import kr.co.richardprj.dto.board.PostVO;
 import kr.co.richardprj.dto.board.RecommendVO;
 import kr.co.richardprj.dto.board.ReplyVO;
@@ -43,7 +44,7 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public int delteBoard(BoardVO board) throws Exception {
+	public int deleteBoard(BoardVO board) throws Exception {
 		return sqlSession.delete(Namespace+".deleteBoard", board);
 	}
 
@@ -63,6 +64,12 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return (PostVO)sqlSession.selectOne(Namespace+".selectPost", post);
 	}
+	
+	@Override
+	public int selectMaxPostNo(PostVO post) throws Exception {
+		
+		return (Integer)sqlSession.selectOne(Namespace+".selectMaxPostNo", post);
+	}
 
 	@Override
 	public int insertPost(PostVO post) throws Exception {
@@ -75,13 +82,23 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return sqlSession.update(Namespace+".updatePost", post);
 	}
+	@Override
+	public int increaseReadCnt(PostVO post) throws Exception {
+		
+		return sqlSession.update(Namespace+".increaseReadCnt", post);
+	}
 
 	@Override
-	public int deltePost(PostVO post) throws Exception {
+	public int deletePost(PostVO post) throws Exception {
 		
 		return sqlSession.delete(Namespace+".deletePost", post);
 	}
-
+	
+	@Override
+	public ContentsVO selectContents(PostVO post) throws Exception {
+		return (ContentsVO)sqlSession.selectOne(Namespace+".selectContents", post);
+	}
+	
 	@Override
 	public int insertContents(PostVO post) throws Exception {
 		
@@ -95,7 +112,7 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public int delteContents(PostVO post) throws Exception {
+	public int deleteContents(PostVO post) throws Exception {
 		
 		return sqlSession.delete(Namespace+".deleteContents", post);
 	}
@@ -125,7 +142,7 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public int delteReply(ReplyVO rep) throws Exception {
+	public int deleteReply(ReplyVO rep) throws Exception {
 		
 		return sqlSession.delete(Namespace+".deleteReply", rep);
 	}
@@ -143,9 +160,9 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public List<AttachFileVO> selectAttachFileList(AttachFileVO af) throws Exception {
+	public List<AttachFileVO> selectAttachFileList(PostVO post) throws Exception {
 		
-		return sqlSession.selectList(Namespace+".selectAttachFileList", af);
+		return sqlSession.selectList(Namespace+".selectAttachFileList", post);
 	}
 
 	@Override
@@ -155,12 +172,10 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public int delteAttachFile(AttachFileVO af) throws Exception {
+	public int deleteAttachFile(AttachFileVO af) throws Exception {
 		
 		return sqlSession.delete(Namespace+".deleteAttachFile", af);
 	}
-
-	
 
 	
 }

@@ -298,3 +298,18 @@ etll8yigZ0FiIKr4JEsRcTbb
 	</interceptors>	
 
 2. LoginInterceptor.java, AuthInterceptor.java를 생성하고, HandlerInterceptorAdapter 를 extends한다.
+
+
+--mysql contraints 확인
+select * from information_schema.table_constraints where table_name = 'contents';
+
+select * from information_schema.table_constraints 
+where constraint_schema = 'richard_scheme'
+and table_name in ('post', 'contents');
+--제약조건삭제
+ALTER TABLE recommend DROP CONSTRAINT recommend_ibfk_2;
+-- 컬럼유형수정
+alter table post modify modDate datetime;
+
+-- 게시판 게시글, 파일 업로드 하기
+https://melonpeach.tistory.com/51

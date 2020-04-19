@@ -21,31 +21,164 @@
 		left outer join recommend c on (a.boardId = b.boardId and c.postNo = c.postNo)
 		where a.boardId = #{boardId}
 		group by a.boardId, a.postNo, a.writer, a.modDate, a.readCnt
-		order by postNo
+		order by postNo desc
 		LIMIT #{pagination.startList}, #{pagination.listSize}
 
 	</select>
 
 
 	<select id="selectPostListCnt" parameterType="postVO" resultType="int">
-		SELECT count(*) from post
+		SELECT ifnull(count(*),0) from post
 		where boardId = #{boardId}
 	</select>
 	
-	
-	<insert id="registerMember" parameterType="memberVO">
-
-	</insert>
-
-	<select id="selectMembers" parameterType="memberVO" resultType="memberVO">
-		SELECT *
-		FROM MEMBER
-		WHERE 1 = 1
-		<choose>
-			<when test="mbrid != '' and mbrid != null">
-				AND mbrid = #{mbrid}
-			</when>
-		</choose>
+	<select id="selectPost" parameterType="postVO" resultType="postVO">
+		SELECT * from post
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
 	</select>
+	
+	<select id="selectMaxPostNo" parameterType="postVO" resultType="int">
+		SELECT ifnull(max(postNo),0) from post
+		where boardId = #{boardId}
+	</select>
+	
+	<select id="selectContents" parameterType="postVO" resultType="contentsVO">
+		SELECT * from contents
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
+	</select>
+	
+	<insert id="insertPost" parameterType="postVO">
+		 insert into post (
+			 boardId
+			,postNo
+			,postTitle
+			,topPostYn
+			,dispYn
+			,replyYn
+			,delYn
+			,writer
+			,regDate
+			,modDate
+			,readCnt
+			)
+			values (
+			 #{boardId     }
+			,#{postNo      }
+			,#{postTitle   }
+			,#{topPostYn   }
+			,#{dispYn      }
+			,#{replyYn     }
+			,#{delYn       }
+			,#{writer      }
+			,sysdate()
+			,sysdate()
+			,0
+			)
+	</insert>
+	
+	<insert id="insertContents" parameterType="postVO">
+		 insert into contents (
+			 boardId
+			,postNo
+			,contents
+			)
+			values (
+			 #{boardId     }
+			,#{postNo      }
+			,#{contents    }
+			)
+	</insert>
+	
+	<update id="updatePost" parameterType="postVO" >
+		update post set 
+			modDate = sysdate()
+			<if test="postTitle != null">
+			, postTitle = #{postTitle}
+			</if>
+			<if test="topPostYn != null">
+    	    , topPostYn = #{topPostYn}
+  			</if>
+  			<if test="dispYn != null">
+			, dispYn = #{dispYn}
+			</if>
+			<if test="replyYn != null">
+			, replyYn = #{replyYn}
+			</if>
+			<if test="delYn != null">
+			, delYn = #{delYn}
+			</if>
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
+			
+	</update>
+	
+	<update id="increaseReadCnt" parameterType="postVO" >
+		update post set 
+			readCnt = readCnt + 1
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
+			
+	</update>
+	
+	<update id="updateContents" parameterType="postVO" >
+		update contents set 
+			contents = #{contents}
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
+			
+	</update>
+	
+	<delete id="deletePost" parameterType="postVO" >
+		delete from post 
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
+	</delete>
+	
+	<delete id="deleteContents" parameterType="postVO" >
+		delete from contents 
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
+	</delete>
+
+	<select id="selectAttachFileList" parameterType="postVO" resultType="attachFileVO">
+		SELECT *
+		FROM ATTACHFILE
+		WHERE 1 = 1
+		and  boardId = #{boardId}
+		and  postNo = #{postNo}
+	</select>
+	
+	<select id="selectAttachFile" parameterType="attachFileVO" resultType="attachFileVO">
+		SELECT *
+		FROM ATTACHFILE
+		WHERE 1 = 1
+		and  boardId = #{boardId}
+		and  postNo = #{postNo}
+	</select>
+	
+	<insert id="insertAttachFile" parameterType="attachFileVO">
+		 insert into ATTACHFILE (
+			 boardId
+			,postNo
+			,fileSeq
+			,fileName
+			,savedFileName
+			,filePath
+			,fileSize
+			,fileType
+			)
+			values (
+			 #{boardId      }
+			,#{postNo       }
+			,#{fileSeq      }
+			,#{fileName     }
+			,#{savedFileName}
+			,#{filePath     }
+			,#{fileSize     }
+			,#{fileType     }
+			)
+	</insert>
 	
 </mapper>

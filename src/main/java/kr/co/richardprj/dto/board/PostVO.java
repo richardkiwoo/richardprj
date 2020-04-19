@@ -1,11 +1,13 @@
 package kr.co.richardprj.dto.board;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
 public class PostVO {
-	private int    boardId     ;
-	private int    postNo      ;
+	private int    boardId    ;
+	private int    postNo   = -1  ;
 	private int    parentPostNo;
 	private String postTitle   ;
 	private String topPostYn   ;
@@ -21,4 +23,5 @@ public class PostVO {
 	private int  recommendCnt;
 	private int replyCnt;
 	private PaginationVO pagination ;
+	private List<AttachFileVO> attachFile;
 }

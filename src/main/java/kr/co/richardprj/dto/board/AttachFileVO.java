@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class AttachFileVO {
 	private int boardId       ;    
-	private int boardNo       ;
+	private int postNo       ;
 	private int fileSeq       ;
 	private String fileName      ;
 	private String savedFileName ;
 	private String filePath      ;
-	private float fileSize      ;
+	private long fileSize      ;
 	private String fileType      ;
 }
