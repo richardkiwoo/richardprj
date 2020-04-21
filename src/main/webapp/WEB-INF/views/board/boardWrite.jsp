@@ -90,6 +90,7 @@
 	    		return;
 	    	}
 	    	$("#frm").attr("action", "/savePost2.do");
+	    	//alert($("input[name=dispYn]").val() + " \n" +$("input[name=replyYn]").val() );
 	    	$("#frm").submit();
 	    }
 	    function goList(){
@@ -129,11 +130,22 @@
 		    </div>
 		    <input class="form-control" type="file" id="post_files" name="post_files" placeholder="파일 선택" multiple/><br/>
 		</div>
-		<p class="desc">게시글 파일 첨부는 최대 3개까지 저장할 수 있습니다.<br/>용량은 50kbyte이하로 업로드 해주십시오.</p>
-
+		<div>
+		<p class="desc">게시글 파일 첨부는 최대 3개까지 저장할 수 있습니다.<br/>용량은 50kbyte이하로 업로드 해주십시오.</p></div>
+		<div>
+			<div class="custom-control custom-checkbox">
+			    <input type="checkbox" class="custom-control-input" id="dispYn" name="dispYn" 
+			    <c:if test="${article.dispYn eq 'Y'}"> checked </c:if> value="Y">
+				<label class="custom-control-label" for="dispYn">비공개</label>
+				<input type="checkbox" class="custom-control-input" id="replyYn" name="replyYn" 
+				<c:if test="${article.replyYn eq 'Y'}"> checked </c:if> value="Y">
+				<label class="custom-control-label" for="replyYn">비댓글</label>
+			</div>
+		</div>
 		<!-- The global progress bar -->
-		<div id="progress" class="progress">
-		<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+		<!-- <div id="progress" class="progress">
+		<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div> -->
+		<hr>
 
 </div>
   	</div>

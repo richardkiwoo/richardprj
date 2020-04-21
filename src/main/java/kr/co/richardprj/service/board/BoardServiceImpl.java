@@ -29,6 +29,7 @@ import kr.co.richardprj.dao.board.BoardDAO;
 import kr.co.richardprj.dto.board.AttachFileVO;
 import kr.co.richardprj.dto.board.ContentsVO;
 import kr.co.richardprj.dto.board.PostVO;
+import kr.co.richardprj.dto.board.ReplyVO;
 
 @Service
 @PropertySource("classpath:/property/global.properties")
@@ -64,7 +65,9 @@ public class BoardServiceImpl implements BoardService{
 		p.setContents(cont == null ? "" : cont.getContents());
 		
 		List<AttachFileVO> afList = boardDao.selectAttachFileList(post);
+		p.setRecommendCnt(boardDao.selectRecommendCnt(post));
 		p.setAttachFile(afList);
+		p.setReplies(boardDao.selectReplyList(post));
 		
 		return p;
 	}
@@ -129,6 +132,16 @@ public class BoardServiceImpl implements BoardService{
 		return r1 + r2 ;
 	}
 	
+	@Override
+	public int updateReply(ReplyVO reply) throws Exception {
+		return boardDao.updateReply(reply);
+	}
+
+	@Override
+	public int deleteReply(ReplyVO reply) throws Exception {
+		return boardDao.deleteReply(reply);
+	}
+
 	public static String getRandomString() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
@@ -144,16 +157,18 @@ public class BoardServiceImpl implements BoardService{
 		Environment env = context.getEnvironment();
 		String UPLOAD_PATH = env.getProperty("upload.path");
 		
-//		MultipartFile multipartFile = null;
 		String originalFileName = null;
 		String originalFileExtension = null;
 		String storedFileName = null;
 		int i = 0;
 		for(MultipartFile f : fileList){
 			storedFileName = saveFile(f);
-			if(storedFileName == null || StringUtils.equals(storedFileName, ""))
-				break;
+			
 			originalFileName = f.getOriginalFilename();
+			
+			if(originalFileName == null || StringUtils.equals(originalFileName, ""))
+				break;
+			
 			originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
 			
 			af.setFileSeq(++i);
@@ -165,49 +180,6 @@ public class BoardServiceImpl implements BoardService{
 			boardDao.insertAttachFile(af);
 			
 	    }
-		
-		/*
-		Iterator<String> iterator = mpRequest.getFileNames();
-		
-		MultipartFile multipartFile = null;
-		String originalFileName = null;
-		String originalFileExtension = null;
-		String storedFileName = null;
-		
-		Environment env = context.getEnvironment();
-		String UPLOAD_PATH = env.getProperty("upload.path");
-		
-		File file = new File(UPLOAD_PATH);
-		if(file.exists() == false) {
-			file.mkdirs();
-		}
-		int i = 0;
-		AttachFileVO af = new AttachFileVO();
-		af.setBoardId(post.getBoardId());
-		af.setPostNo(post.getPostNo());
-		while(iterator.hasNext()) {
-			multipartFile = mpRequest.getFile(iterator.next());
-			if(multipartFile.isEmpty() == false) {
-				originalFileName = multipartFile.getOriginalFilename();
-				originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-				storedFileName = getRandomString() + originalFileExtension;
-				
-				file = new File(UPLOAD_PATH, storedFileName);
-				
-				logger.info("file path is {}", file.toString() + "/" + storedFileName);
-				
-				multipartFile.transferTo(file);
-				
-				af.setFileSeq(++i);
-				af.setFileName(originalFileName);
-				af.setSavedFileName(storedFileName);
-				af.setFilePath(UPLOAD_PATH);
-				af.setFileSize((int)multipartFile.getSize());
-				af.setFileType(originalFileExtension.substring(1));
-				boardDao.insertAttachFile(af);
-			}
-		}
-		*/
 		
 		return i;
 	}
@@ -232,5 +204,19 @@ public class BoardServiceImpl implements BoardService{
 
 	    return saveName;
 	} // end saveFile
+
+	@Override
+	public AttachFileVO getAttachFile(AttachFileVO file) throws Exception {
+		return boardDao.selectAttachFile(file);
+	}
+
+	@Override
+	public ReplyVO insertReply(ReplyVO reply) throws Exception {
+		reply.setReplyNo(boardDao.selectMaxReplyNo(reply)+1);
+		int r1 = boardDao.insertReply(reply);
+		if (r1 < 1)
+			reply = null;
+		return reply;
+	}
 
 }

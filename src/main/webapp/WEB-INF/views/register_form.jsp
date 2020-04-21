@@ -44,7 +44,6 @@
 			alert("아이디를 입력해 주세요!");
 			return false;
 		}
-		
 		$.ajax({
 			url: "checkID.do",
 		    type: "POST",

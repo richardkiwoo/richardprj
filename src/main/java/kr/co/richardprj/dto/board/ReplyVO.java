@@ -6,13 +6,14 @@ import lombok.Data;
 public class ReplyVO {
 
 	private int boardId    ;
-	private int boardNo    ;
-	private int repNo      ;
-	private int parentRepNo;
+	private int postNo    ;
+	private int replyNo      ;
 	private String repCont    ;
 	private String repWriter  ;
 	private String modDate    ;
 	private String regDate    ;
+	private String delYn    ;
 	private int  recommendCnt;
 	
 }
+

@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -35,6 +37,7 @@ import com.example.dto.MemberVO;
 
 import kr.co.richardprj.dto.board.PaginationVO;
 import kr.co.richardprj.dto.board.PostVO;
+import kr.co.richardprj.dto.board.ReplyVO;
 import kr.co.richardprj.service.board.BoardService;
 import kr.co.richardprj.swp.interceptor.SessionNames;
 
@@ -65,6 +68,27 @@ public class BoardController implements SessionNames{
 		model.addAttribute("pagination",pagination);
 
 		return "board/boardView";
+	}
+	
+	@RequestMapping(value="/board/addReply.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> addReply(Model model, ReplyVO rep, HttpSession sess) throws Exception {
+		MemberVO member = (MemberVO)sess.getAttribute(LOGIN);
+		rep.setRepWriter(member.getMbrid());
+		rep.setDelYn("N");
+		
+		logger.info("addReply.do called....{}", rep.toString());
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		ReplyVO replyvo = boardService.insertReply(rep);
+		if(replyvo != null) {
+			map.put("msg", "insert successfully");
+			map.put("new_replyNo", replyvo.getReplyNo());
+		}else {
+			map.put("msg", "Sorry, error occurred!");
+		}
+		
+		return map;
+		 
 	}
 	
 	/**
@@ -204,7 +228,7 @@ public class BoardController implements SessionNames{
 	public String board (Model model, PostVO post) throws Exception {
 		if(post.getPostNo() > 0) {
 			logger.info("postNo is {}", post.getPostNo());
-			model.addAttribute("article", boardService.getPostOnly(post));
+			model.addAttribute("article", boardService.getPost(post));
 		}else {
 			model.addAttribute("article", post);
 		}
@@ -225,6 +249,38 @@ public class BoardController implements SessionNames{
         }
     }
 	
+	
+	@RequestMapping(value="/board/removeReply.do", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> removeReply(ReplyVO reply, PostVO post, PaginationVO pagination) throws Exception {
+		reply.setDelYn("Y");
+		reply.setRepCont(null);
+		boardService.updateReply(reply);
+		
+		post.setPagination(pagination);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("post", post);
+		
+//		Map<String, Object> map = new HashMap<String,Object>(); 
+//		map.put("param1", "나의파람1"); 
+//		map.put("param2", "나의파람2"); 
+//		redirectAttr.addFlashAttribute("param1", map);
+		//여러개의 파람을 보낼경우는 위방식, 하나는 아래방식으로 하면 된다.
+//		post.setPagination(pagination);
+//		redirectAttr.addFlashAttribute("post", post);
+		
+		return map;
+	}
+	@RequestMapping(value="/board/updateReply.do", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateReply(ReplyVO reply,PostVO post, PaginationVO pagination) throws Exception {
+		boardService.updateReply(reply);
+		post.setPagination(pagination);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("post", post);
+		
+		return map;
+	}
 	
 	@GetMapping("/summernoteImage/{fileId}")
     @ResponseBody

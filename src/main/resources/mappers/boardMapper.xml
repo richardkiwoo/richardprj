@@ -14,11 +14,13 @@
 			a.writer,
 			a.modDate,
 			a.readCnt, 
-			ifnull(sum(b.replyNo), 0) as replyCnt,
-			ifnull(sum(c.likeNo), 0) as recommendCnt
+			ifnull(count(distinct b.replyNo), 0) as replyCnt,
+			ifnull(count(distinct c.likeNo), 0) as recommendCnt,
+			ifnull(count(distinct d.fileSeq), 0) as attachFileCnt
 		from post a 
-		left outer join reply b on (a.boardId = b.boardId and a.postNo = b.postNo)
-		left outer join recommend c on (a.boardId = b.boardId and c.postNo = c.postNo)
+		left outer join reply b on (a.boardId = b.boardId and a.postNo = b.postNo and b.delYn = 'N')
+		left outer join recommend c on (a.boardId = c.boardId and a.postNo = c.postNo and c.clCd = 'P')
+		left outer join attachfile d on (a.boardId = d.boardId and a.postNo = d.postNo)
 		where a.boardId = #{boardId}
 		group by a.boardId, a.postNo, a.writer, a.modDate, a.readCnt
 		order by postNo desc
@@ -141,6 +143,59 @@
 		where boardId = #{boardId}
 		and   postNo = #{postNo}
 	</delete>
+	
+	
+	<insert id="insertReply" parameterType="replyVO">
+		 insert into REPLY (
+			boardId
+			,postNo
+			,replyNo
+			,repCont
+			,repWriter
+			,modDate
+			,regDate
+			,delYn
+			)
+			values (
+			#{boardId  }  
+			,#{postNo   }
+			,#{replyNo  }
+			,#{repCont  }
+			,#{repWriter}
+			,sysdate()
+			,sysdate()
+			,'N'
+			)
+	</insert>
+	
+	<update id="updateReply" parameterType="replyVO" >
+		update reply set 
+			modDate = sysdate()
+			<if test="repCont != null">
+			,repCont = #{repCont}
+			</if>
+			<if test="delYn != null">
+			, delYn = #{delYn}
+			</if>
+		where boardId = #{boardId}
+		and   postNo  = #{postNo}
+		and   replyNo = #{replyNo}
+	</update>
+	
+	<delete id="deleteReply" parameterType="replyVO" >
+		delete from reply 
+		where boardId = #{boardId}
+		and   postNo  = #{postNo}
+		and   replyNo = #{replyNo}
+	</delete>
+	
+	<select id="selectMaxReplyNo" parameterType="replyVO" resultType="int">
+		SELECT ifnull(max(replyNo),0) 
+		from reply
+		where boardId = #{boardId}
+		and  postNo = #{postNo}
+	</select>
+	
 
 	<select id="selectAttachFileList" parameterType="postVO" resultType="attachFileVO">
 		SELECT *
@@ -156,6 +211,7 @@
 		WHERE 1 = 1
 		and  boardId = #{boardId}
 		and  postNo = #{postNo}
+		and  fileSeq = #{fileSeq}
 	</select>
 	
 	<insert id="insertAttachFile" parameterType="attachFileVO">
@@ -180,5 +236,26 @@
 			,#{fileType     }
 			)
 	</insert>
+	
+	<select id="selectRecommendCnt" parameterType="postVO" resultType="int">
+		SELECT ifnull(count(likeNo),0) 
+		from recommend
+		where boardId = #{boardId}
+		and  postNo = #{postNo}
+		and clCd = 'P'
+	</select>
+	
+	<select id="selectReplyList" parameterType="postVO" resultType="replyVO">
+		SELECT a.boardId, a.postNo, a.replyNo, max(a.repWriter) as repWriter, max(a.modDate) as modDate,
+		       max(a.repCont) as repCont,
+		       count(b.likeNo) as recommendCnt
+		from reply a
+			left outer join recommend b on (a.boardId = b.boardId and a.postNo = b.postNo and a.replyNo = b.replyNo)
+		where a.boardId =  #{boardId}
+		and  a.postNo = #{postNo}
+		and  a.delYn = 'N'
+		group by a.boardId, a.postNo, a.replyNo
+		order by a.replyNo desc
+	</select>
 	
 </mapper>

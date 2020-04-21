@@ -18,7 +18,7 @@ public class PaginationVO {
 	
 	public void pageInfo(int page, int range, int listCnt) {
 
-		this.page = page;
+		this.page = page ;
 		this.range = range;
 		this.listCnt = listCnt;		
 

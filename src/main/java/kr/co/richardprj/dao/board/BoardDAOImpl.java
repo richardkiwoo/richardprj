@@ -118,15 +118,20 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public List<ReplyVO> selectReplyList(ReplyVO rep) throws Exception {
+	public List<ReplyVO> selectReplyList(PostVO post) throws Exception {
 		
-		return sqlSession.selectList(Namespace+".selectReplyList", rep);
+		return sqlSession.selectList(Namespace+".selectReplyList", post);
 	}
 
 	@Override
 	public ReplyVO selectReply(ReplyVO post) throws Exception {
 		
 		return null;
+	}
+	
+	@Override
+	public int selectMaxReplyNo(ReplyVO rep) throws Exception {
+		return (Integer)sqlSession.selectOne(Namespace+".selectMaxReplyNo", rep);
 	}
 
 	@Override
@@ -140,13 +145,18 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return sqlSession.update(Namespace+".updateReply", rep);
 	}
-
+	
 	@Override
 	public int deleteReply(ReplyVO rep) throws Exception {
 		
-		return sqlSession.delete(Namespace+".deleteReply", rep);
+		return sqlSession.update(Namespace+".deleteReply", rep);
 	}
 
+	@Override
+	public int selectRecommendCnt(PostVO post) throws Exception {
+		return sqlSession.selectOne(Namespace+".selectRecommendCnt", post);
+	}
+	
 	@Override
 	public int insertRecommend(RecommendVO recommend) throws Exception {
 		
@@ -176,6 +186,13 @@ public class BoardDAOImpl implements BoardDAO{
 		
 		return sqlSession.delete(Namespace+".deleteAttachFile", af);
 	}
+
+	@Override
+	public AttachFileVO selectAttachFile(AttachFileVO file) throws Exception {
+		return sqlSession.selectOne(Namespace+".selectAttachFile", file);
+	}
+
+
 
 	
 }

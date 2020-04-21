@@ -34,18 +34,21 @@ public interface BoardDAO {
 	public int deleteContents(PostVO post) throws Exception;
 	
 	/** 댓글 **/
-	public List<ReplyVO> selectReplyList(ReplyVO rep) throws Exception;
+	public List<ReplyVO> selectReplyList(PostVO post) throws Exception;
 	public ReplyVO selectReply(ReplyVO rep) throws Exception;
+	public int selectMaxReplyNo(ReplyVO post) throws Exception;
 	public int insertReply(ReplyVO rep) throws Exception ;
 	public int updateReply(ReplyVO rep) throws Exception;
 	public int deleteReply(ReplyVO rep) throws Exception;
 	
 	/** 추천 **/
+	public int selectRecommendCnt(PostVO post) throws Exception ;
 	public int insertRecommend(RecommendVO recommend) throws Exception ;
 	public int deleteRecommend(RecommendVO recommend) throws Exception;
 	
 	/** 첨부파일 **/
 	public List<AttachFileVO> selectAttachFileList(PostVO post) throws Exception;
+	public AttachFileVO selectAttachFile(AttachFileVO file) throws Exception;
 	public int insertAttachFile(AttachFileVO af) throws Exception ;
 	public int deleteAttachFile(AttachFileVO af) throws Exception;
 	

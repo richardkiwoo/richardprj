@@ -64,10 +64,12 @@
 			$("input[type=hidden][name=postNo]").val(postno);
 			$("#frm").submit();
 		}
-		function goWrite(postno){
-			$("#frm").attr("action", "/postWrite.do");
-			$("#frm").method = "post";
-			$("#frm").submit();
+		function goWrite(){
+// 			$("#frm").attr("action", "/postWrite.do");
+// 			$("#frm").method = "post";
+// 			$("#frm").submit();
+			
+			location.href="/postWrite.do?boardId=${boardId}";
 		}
 
 	</script>
@@ -99,7 +101,8 @@
     <c:forEach var="postVO" items="${postList}" >
       <tr>
         <td><c:out value="${postVO.postNo}" /></td>
-        <td><a href="#" onclick="javascript:goView(${postVO.postNo})"><c:out value="${postVO.postTitle}" /></a></td>
+        <td><a href="#" onclick="javascript:goView(${postVO.postNo})"><c:out value="${postVO.postTitle}" /></a>
+        &nbsp;<span class="badge badge-secondary">${postVO.replyCnt}</span></td>
         <td><c:out value="${postVO.writer}" /></td>
         <td><c:out value="${postVO.modDate}" /></td>
         <td><c:out value="${postVO.recommendCnt}" /></td>

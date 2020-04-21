@@ -25,16 +25,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.richardprj.dto.FileVO;
+import kr.co.richardprj.dto.board.AttachFileVO;
 import kr.co.richardprj.service.FileService;
+import kr.co.richardprj.service.board.BoardService;
 
 @Controller
 @PropertySource("classpath:/property/global.properties")
-public class FileUploadController {
+public class FileController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 	
 	@Inject
 	private FileService fileService;
+	
+	@Inject
+	private BoardService boardService;
 	
 	@Autowired
 	ApplicationContext context;
@@ -47,16 +52,12 @@ public class FileUploadController {
 		return "file_list";
 	}
 	
-	@RequestMapping(value= "/fileDownload.do", method= RequestMethod.GET)
+	@RequestMapping(value= "/fileDownload.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public void fileDownloader(HttpServletRequest request, HttpServletResponse response, FileVO fileVO) throws Exception {
-		
-		logger.info("idx ======" + fileVO.getIdx());
 		
 		FileVO fileinfo = fileService.getFileInfo(fileVO);
 		String fileName = fileinfo.getStoredFileName();
 		fileService.increaseDownCnt(fileVO);
-		
-		logger.info("****************** " + fileName);
 		
 		Environment env = context.getEnvironment();
 
@@ -91,6 +92,51 @@ public class FileUploadController {
 		
 	}
 	
+	/**
+	 * board file download
+	 * @param request
+	 * @param response
+	 * @param fileVO
+	 * @throws Exception
+	 */
+	@RequestMapping(value= "/board/attachFileDownload.do", method=  RequestMethod.POST)
+	public void attachFileDownload(HttpServletRequest request, HttpServletResponse response, AttachFileVO fileVO) throws Exception {
+		
+		AttachFileVO fileinfo = boardService.getAttachFile(fileVO);
+		String savedFileName = fileinfo.getSavedFileName();
+		String fileName = fileinfo.getFileName();
+		//Environment env = context.getEnvironment();
+		//String UPLOAD_PATH = env.getProperty("upload.path");
+		
+		try {
+			File file = new File(fileinfo.getFilePath(), savedFileName);
+			
+			if (!file.exists()) {
+				logger.error("file not found~~{}",savedFileName);
+				return ;
+			}
+			
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-Transfer-Encoding", "binary;");
+			/**** java.net.URLEncoder.encode , UTF-8 ,need to remove space at the end, **/
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + java.net.URLEncoder.encode(fileName, "utf-8") + "\";");
+			response.setContentLength((int) file.length());
+			
+			OutputStream os = response.getOutputStream();
+			FileInputStream fis = new FileInputStream(file);
+			
+			//use file copy utils from input stream to output stream
+			FileCopyUtils.copy(fis, os);
+			
+			fis.close();
+            os.close();
+			
+		} catch(IOException e) {
+			logger.error(e.getMessage());
+		}
+		
+	}
+	
 	@RequestMapping(value = "/fileupload.do", method = RequestMethod.POST)
 	public String upload(MultipartFile uploadfile, Model model) throws Exception {
 		logger.info("upload() POST method");
@@ -101,7 +147,7 @@ public class FileUploadController {
 		if(result !=null){ // upload file is not empty
 			
 			FileVO fileinfo = new FileVO();
-			fileinfo.setBoardIdx("1");
+//			fileinfo.setBoardIdx("1");
 			fileinfo.setCreatorId("richard");
 			fileinfo.setFileSize(uploadfile.getSize());
 			fileinfo.setOriginalFileName(uploadfile.getOriginalFilename());
@@ -128,7 +174,7 @@ public class FileUploadController {
 	    String savedFileName = "";
 	    
 	    FileVO fileinfo = new FileVO();
-		fileinfo.setBoardIdx("1");       //board no
+//		fileinfo.setBoardIdx("1");       //board no
 		fileinfo.setCreatorId("richard"); //login id
 		fileinfo.setDownCnt(0);
 		fileinfo.setDelYn("N"); //delete yes or no

@@ -21,7 +21,9 @@ public class PostVO {
 	private String regIp       ;
 	private String contents;
 	private int  recommendCnt;
+	private int  attachFileCnt;
 	private int replyCnt;
 	private PaginationVO pagination ;
 	private List<AttachFileVO> attachFile;
+	private List<ReplyVO> replies;
 }
