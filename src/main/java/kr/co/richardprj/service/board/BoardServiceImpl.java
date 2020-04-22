@@ -126,10 +126,15 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int deletePost(PostVO post) throws Exception {
 		logger.info("delete post {}", post.toString());
-		int r1 = boardDao.deleteContents(post);
-		int r2 = boardDao.deletePost(post);
+		//int r1 = boardDao.deleteContents(post);
+		//int r2 = boardDao.deletePost(post);
+		//update delYn flag instead of delete record..
+		post.setDelYn("Y");
+		post.setDispYn(null);
+		post.setTopPostYn(null);
+		int r2 = boardDao.updatePost(post);
 		
-		return r1 + r2 ;
+		return r2 ;
 	}
 	
 	@Override

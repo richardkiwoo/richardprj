@@ -24,12 +24,14 @@
 	#counter { background:rgba(255,0,0,0.5); border-radius: 0.5em; padding: 0 .5em 0 .5em; font-size: 0.75em;}
 	.form-group button {margin:10px 0 10px;}
 	/* 댓글 버튼*/
-	
+	.list-group-item > ul > li {position:relative;}
+	.list-group-item > ul > li > button {margin:0 3px 0 3px; position:absolute; right:45px; top:5px;}
+	.list-group-item > ul > li > button:last-child{right:5px;}
 	</style>
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
-	     
+		
 	});
 	
 	function modifyPost(){
@@ -86,8 +88,6 @@
 		alert("로그인 후 작성해 주세요!"); return;
 		</c:if>
 		if (rep == ''){alert("댓글을 작성해 주세요!"); return;}
-		
-		//$('#replyList').prepend('<li class="list-group-item">'+rep+'</li>');
 		
 		$('#frm input[name=replyNo]').val(0);
 		var form_data = $("#frm").serialize();
@@ -187,7 +187,7 @@
 	  				<ul class="list-group list-group-flush">
 	  					<li class="list-group-item" style="border-bottom:none;">${rep.repWriter}<br>${rep.modDate}
 	  					<c:if test="${loginInfo.mbrid eq rep.repWriter}">
-	  					<button type="button" class="btn btn-primary btn-xs" onClick="modifyReply(${rep.replyNo});">수정</button>
+	  					<button type="button" class="btn btn-primary btn-xs" id="btn_rep_mod" onClick="modifyReply(${rep.replyNo});">수정</button>
 		  				<button type="button" class="btn btn-primary btn-xs btn-danger" onClick="deleteReply(${rep.replyNo});">삭제</button>
 		  				</c:if>
 	  					</li>
@@ -207,10 +207,12 @@
 		      <div class="modal-content">
 		        <div class="modal-header">
 		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		          <h4 class="modal-title">Modal Header</h4>
+		          <h4 class="modal-title">댓글 수정</h4>
 		        </div>
 		        <div class="modal-body">
-		          <p>Some text in the modal.</p>
+		          <textarea id="repCont_mod" name="repCont_mod" class="form-control" placeholder="댓글을 남겨보세요~"></textarea>
+		          <button type="button" class="btn btn-info" onClick="javascript:reply();">댓글달기</button>
+	    			<span id="counter">###</span>
 		        </div>
 		        <div class="modal-footer">
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -219,16 +221,14 @@
 		      
 		    </div>
 		  </div>
-		  
+		<script>
+			$('#btn_rep_mod').click(function(e){
+				e.preventDefault();
+				$('#myModal').modal("show");
+			});
+		</script>
 		</div>
 		
-	  	<%-- <div class="container">
-		  	<c:if test="${loginInfo.mbrid == post.writer}">
-		  		<button type="button" class="btn btn-primary" onClick="modifyPost();">수정</button>
-		  		<button type="button" class="btn btn-primary" onClick="deletePost();">삭제</button>
-		  	</c:if>
-		  		<button type="button" class="btn btn-primary" onClick="goList();">목록</button>
-	  	</div> --%>
   	</div>
 	<input type="text" style="width:0; top:-1000%">
 </form>

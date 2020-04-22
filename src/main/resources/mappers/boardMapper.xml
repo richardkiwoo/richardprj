@@ -22,6 +22,7 @@
 		left outer join recommend c on (a.boardId = c.boardId and a.postNo = c.postNo and c.clCd = 'P')
 		left outer join attachfile d on (a.boardId = d.boardId and a.postNo = d.postNo)
 		where a.boardId = #{boardId}
+		and   a.delYn = 'N'
 		group by a.boardId, a.postNo, a.writer, a.modDate, a.readCnt
 		order by postNo desc
 		LIMIT #{pagination.startList}, #{pagination.listSize}
@@ -32,6 +33,7 @@
 	<select id="selectPostListCnt" parameterType="postVO" resultType="int">
 		SELECT ifnull(count(*),0) from post
 		where boardId = #{boardId}
+		and delYn = 'N'
 	</select>
 	
 	<select id="selectPost" parameterType="postVO" resultType="postVO">
