@@ -147,6 +147,13 @@
 	</delete>
 	
 	
+	<select id="selectReply" parameterType="replyVO" resultType="replyVO">
+		SELECT * from reply
+		where boardId = #{boardId}
+		and   postNo = #{postNo}
+		and   replyNo = #{replyNo}
+	</select>
+	
 	<insert id="insertReply" parameterType="replyVO">
 		 insert into REPLY (
 			boardId

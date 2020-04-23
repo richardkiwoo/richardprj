@@ -78,6 +78,12 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
+	public ReplyVO getReply(ReplyVO reply) throws Exception {
+		ReplyVO rep = boardDao.selectReply(reply);
+		return rep;
+	}
+	
+	@Override
 	public int increaseReadCnt(PostVO post) throws Exception {
 		return boardDao.increaseReadCnt(post);
 	}		

@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.MemberVO;
 
@@ -70,6 +72,16 @@ public class BoardController implements SessionNames{
 		return "board/boardView";
 	}
 	
+	@RequestMapping(value="/board/getReply.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getReply(Model model, ReplyVO reply) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("reply", boardService.getReply(reply));
+
+		return map;
+	}
+	
 	@RequestMapping(value="/board/addReply.do", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> addReply(Model model, ReplyVO rep, HttpSession sess) throws Exception {
@@ -86,6 +98,22 @@ public class BoardController implements SessionNames{
 		}else {
 			map.put("msg", "Sorry, error occurred!");
 		}
+		
+		return map;
+		 
+	}
+	
+	@RequestMapping(value="/board/saveReply.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateReply(Model model, ReplyVO rep) throws Exception {
+		
+		rep.setDelYn(null);
+		int r = boardService.updateReply(rep);
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		if(r > 0)
+			map.put("msg", "modified reply successfully!");
+		else
+			map.put("msg", "sorry.. error");
 		
 		return map;
 		 

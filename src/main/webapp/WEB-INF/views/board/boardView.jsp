@@ -27,7 +27,27 @@
 	.list-group-item > ul > li {position:relative;}
 	.list-group-item > ul > li > button {margin:0 3px 0 3px; position:absolute; right:45px; top:5px;}
 	.list-group-item > ul > li > button:last-child{right:5px;}
+	
+	
+	/* The Modal (background) */
+	.modal { display: none; /* Hidden by default */ position: fixed; /* Stay in place */ z-index: 1; /* Sit on top */ left: 0; top: 0; width: 100%; height: 100%;
+			overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); }
+	
+	/* Modal Content/Box */
+	.modal-content { background-color: #fefefe; margin: 15% auto; /* 15% from the top and centered */ padding: 20px; border: 1px solid #888; width: 80%; /* Could be more or less, depending on screen size */}
+	
+	/* The Close Button */
+	.close { color: #aaa; float: right; font-size: 28px; font-weight: bold; margin:5px 2px;}
+	
+	.close:hover,
+	.close:focus { color: black;text-decoration: none;cursor: pointer;}
+	.modal-content button {margin : 5px 3px;}
+	.modal-content .btn-default {float:right}
+	
+	.list-group-item > span {font-size:10px; font-style:italic}
+
 	</style>
+	
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
@@ -45,6 +65,7 @@
 	}
 	
 	function deletePost(){
+		if(confirm("게시글을 삭제하시겠습니까?") != true){return;}
 		$("#frm").attr("action", "/postDelete.do");
 		$("#frm").submit();
 	}
@@ -75,13 +96,57 @@
 		});
 		
 	}
-	function updateReply(repNo){
+	function modifyReply(repNo){
 		
+		modal.style.display = "block";
 		
-// 		$("#frm input[name=fileSeq]").val(fileseq);
-// 		$("#frm").attr("action", "/board/attachFileDownload.do");
-// 		$("#frm").submit();
+		$("#frm input[name=replyNo]").val(repNo);
+		
+		$.ajax({
+			type: "POST",
+			url: "/board/getReply.do",
+	        dataType : "json",//서버에서 보내는 데이터타입(브라우저에서 받는)
+		    data: $('#frm').serialize(),
+		    success: function(result) {
+		    	var cont = result.reply.repCont;
+		    	$("#repCont_mod").val(cont);
+		    	//$("#myModal").show();
+		    },
+		    error:function(request,status,error){
+                alert("code:  "+request.status+"\n"+"message:  "+request.responseText+"\n"+"error:  "+error);
+            }
+
+		});
+		
 	}
+	
+	function saveReply(){
+		//alert($("#repCont_mod").val());
+		$("#repCont").val($("#repCont_mod").val());
+		var fv = $('#frm').serialize();
+		
+		$("#repCont").val("");
+		var replyNo = $("#frm input[name=replyNo]").val();
+		//$("#myModal").css("display","none");
+		
+		 $.ajax({
+			type: "POST",
+			url: "/board/saveReply.do",
+	        dataType : "json",//서버에서 보내는 데이터타입(브라우저에서 받는)
+		    data: fv,
+		    success: function(result) {
+		    	$("#repCont_li_"+replyNo).text($("#repCont_mod").val().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
+		    	$("#rep_date_"+replyNo).text("방금");
+		    	modal.style.display = "none";
+		    },
+		    error:function(request,status,error){
+                alert("code:  "+request.status+"\n"+"message:  "+request.responseText+"\n"+"error:  "+error);
+            }
+
+		});
+		
+	}
+	
 	function reply(){
 		var rep = $("#repCont").val();
 		<c:if test="${loginInfo == null}">
@@ -98,16 +163,16 @@
 	        dataType : "json", //서버에서 보내는 데이터타입(브라우저에서 받는)
 		    data: $('#frm').serialize(),
 		    success: function(msg) {
-		    	alert(msg.msg);
+		    	
 		    	var no = msg.new_replyNo;
 		       	var html = "";
 		       	html += "<li class=\"list-group-item\" id=\"replyNo_"+ no +"\">";
 		       	html += "<ul class=\"list-group list-group-flush\">";
-		       	html += "	<li class=\"list-group-item\" style=\"border-bottom:none;\">${loginInfo.mbrid}<br>방금";
-		       	html += "	<button type=\"button\" class=\"btn btn-primary btn-xs\" onClick=\"modifyReply("+no+");\">수정</button>";
+		       	html += "	<li class=\"list-group-item\" style=\"border-bottom:none;\">${loginInfo.mbrid}<br><span id=\"rep_date_"+no+"\">방금</span>";
+		       	html += "	<button type=\"button\" class=\"btn btn-primary btn-xs\" id=\"btn_rep_mod\"  onClick=\"modifyReply("+no+");\">수정</button>";
 		       	html += "	<button type=\"button\" class=\"btn btn-primary btn-xs btn-danger\" onClick=\"deleteReply("+no+");\">삭제</button>";
 		       	html += "	</li>";
-		       	html += "	<li class=\"list-group-item\" style=\"border-top:none;\">"+$("#repCont").val()+"</li>";
+		       	html += "	<li class=\"list-group-item\" style=\"border-top:none;\">"+$("#repCont").val().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")+"</li>";
 		       	html += "</ul>";
 		       	html += "</li>";
 		       	
@@ -176,7 +241,7 @@
 		</div> -->
 		<div class="form-group wrap19">
 	    	<label for="repCont">댓글:</label>
-	    	<textarea id="repCont" name="repCont" class="form-control" placeholder="댓글을 남겨보세요~"></textarea>
+	    	<textarea id="repCont" name="repCont" class="form-control" maxlength="300" placeholder="댓글을 남겨보세요~"></textarea>
 	    	<button type="button" class="btn btn-info" onClick="javascript:reply();">댓글달기</button>
 	    	<span id="counter">###</span>
 	  	</div>
@@ -185,13 +250,13 @@
 		  	<c:forEach var="rep" items="${post.replies}">
 	  			<li class="list-group-item" id="replyNo_${rep.replyNo}">
 	  				<ul class="list-group list-group-flush">
-	  					<li class="list-group-item" style="border-bottom:none;">${rep.repWriter}<br>${rep.modDate}
+	  					<li class="list-group-item" style="border-bottom:none;">${rep.repWriter}<br><span id="rep_date_${rep.replyNo}">${rep.modDate}</span>
 	  					<c:if test="${loginInfo.mbrid eq rep.repWriter}">
 	  					<button type="button" class="btn btn-primary btn-xs" id="btn_rep_mod" onClick="modifyReply(${rep.replyNo});">수정</button>
 		  				<button type="button" class="btn btn-primary btn-xs btn-danger" onClick="deleteReply(${rep.replyNo});">삭제</button>
 		  				</c:if>
 	  					</li>
-	  					<li class="list-group-item" style="border-top:none;">${rep.repCont}</li>
+	  					<li class="list-group-item" id="repCont_li_${rep.replyNo}" style="border-top:none;">${rep.repCont}</li>
 	  				</ul>
 	  			</li>
 	  		</c:forEach>
@@ -199,38 +264,49 @@
 		</div>
 		
 		
-		<!-- Modal -->
-		  <div class="modal fade" id="myModal" role="dialog">
-		    <div class="modal-dialog">
-		    
-		      <!-- Modal content-->
-		      <div class="modal-content">
-		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		          <h4 class="modal-title">댓글 수정</h4>
-		        </div>
-		        <div class="modal-body">
-		          <textarea id="repCont_mod" name="repCont_mod" class="form-control" placeholder="댓글을 남겨보세요~"></textarea>
-		          <button type="button" class="btn btn-info" onClick="javascript:reply();">댓글달기</button>
-	    			<span id="counter">###</span>
-		        </div>
-		        <div class="modal-footer">
-		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        </div>
-		      </div>
-		      
-		    </div>
-		  </div>
-		<script>
-			$('#btn_rep_mod').click(function(e){
-				e.preventDefault();
-				$('#myModal').modal("show");
-			});
-		</script>
-		</div>
+		<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>댓글 수정..</p>
+    <textarea id="repCont_mod" name="repCont_mod" class="form-control" maxlength="300"></textarea>
+	<button type="button" class="btn btn-info" onClick="javascript:saveReply();">댓글달기</button>
+	<button type="button" class="btn btn-default btn-xs" onClick="modal.style.display = 'none';">Close</button>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+// Get the button that opens the modal
+//var btn = document.getElementById("myBtn");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+// When the user clicks on the button, open the modal
+//	btn.onclick = function() {
+//	  modal.style.display = "block";
+//	}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+</script>		
+
 		
   	</div>
-	<input type="text" style="width:0; top:-1000%">
+	<!-- <input type="text" style="width:0; top:-1000%"> -->
 </form>
 
 <%@ include file="/WEB-INF/views/footer.jsp" %>

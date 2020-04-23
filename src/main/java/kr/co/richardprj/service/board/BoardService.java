@@ -21,6 +21,7 @@ public interface BoardService {
 	public int updatePost(PostVO post, MultipartHttpServletRequest mpRequest) throws Exception;
 	public int deletePost(PostVO post) throws Exception;
 	
+	public ReplyVO getReply(ReplyVO reply) throws Exception;
 	public ReplyVO insertReply(ReplyVO reply) throws Exception;
 	public int updateReply(ReplyVO reply) throws Exception;
 	public int deleteReply(ReplyVO reply) throws Exception;

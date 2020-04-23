@@ -124,9 +124,9 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public ReplyVO selectReply(ReplyVO post) throws Exception {
+	public ReplyVO selectReply(ReplyVO rep) throws Exception {
 		
-		return null;
+		return sqlSession.selectOne(Namespace+".selectReply", rep);
 	}
 	
 	@Override
