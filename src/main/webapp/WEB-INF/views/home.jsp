@@ -7,10 +7,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Home</title>
-	<link rel="stylesheet" href="resources/css/bootstrap.css">
+	<!-- <link rel="stylesheet" href="resources/css/bootstrap.css"> -->
+	<link rel="stylesheet" href="resources/css/reset.css">
+	<link rel="stylesheet" href="resources/css/default.css">
 	<link rel="stylesheet" href="resources/css/style.css">
-<!-- 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     
 	
@@ -46,14 +49,16 @@
 <body>
 <%@ include file="/WEB-INF/views/header.jsp" %>
 
-	<div class="container">
-		<div class="jumbotron">
-			<h1 class="text-center">Richard를 소개합니다.</h1>
-			<p class="text-center">Richard IT교육 사이트입니다. 다양한 환경...</p>
-			<p class="text-center"><a class="btn btn-primary btn-lg" href="#">강의 들으러 가기</a></p>
-		</div>
+<div class="container">
+	<div class="jumbotron">
+		<h1>Richard를 소개합니다.</h1>
+		<p>Richard IT교육 사이트입니다. 다양한 환경...</p>
+		<p><a href="#">강의 들으러 가기</a></p>
 	</div>
-	
+</div>
+
+
+<!-- 
 	
 	<h1>파일 업로드</h1>
 <form action="/fileupload.do"  method="post" enctype="multipart/form-data" onSubmit="return checkFile();">
@@ -73,6 +78,7 @@
 	
 	<h2><a href="/excelDownloadUpload.do">게임결과 엑셀 다운로드</a></h2>
 
+ -->
 <%@ include file="/WEB-INF/views/footer.jsp" %>
 
 </body>

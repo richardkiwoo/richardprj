@@ -28,8 +28,7 @@ public class BoardDAOImpl implements BoardDAO{
 
 	@Override
 	public BoardVO selectBoard(BoardVO board) throws Exception {
-		
-		return null;
+		return sqlSession.selectOne(Namespace+".selectBoard", board);
 	}
 
 	@Override

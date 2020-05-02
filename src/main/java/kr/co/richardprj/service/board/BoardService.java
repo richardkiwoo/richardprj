@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.richardprj.dto.board.AttachFileVO;
+import kr.co.richardprj.dto.board.BoardVO;
 import kr.co.richardprj.dto.board.PostVO;
 import kr.co.richardprj.dto.board.ReplyVO;
 
 public interface BoardService {
+	public BoardVO getBoard(BoardVO board) throws Exception;
+	
 	public List<PostVO> getPostList(PostVO post) throws Exception;
 	public int selectPostListCnt(PostVO post) throws Exception;
 	public PostVO getPost(PostVO post) throws Exception;

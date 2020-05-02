@@ -1,10 +1,8 @@
 /* 전체영역 스타일 */
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-* { font-family: 'Nanum Gothic';}
-a { color: #000; text-decoration: none;}
-a:hover { color: #bbb; text-decoration: none; cursor: pointer;}
 
-.navbar-default { background: #43c269; border-color: #43c269;}
+
+/* .navbar-default { background: #43c269; border-color: #43c269;}
 .navbar-default .navbar-brand { color: #fff;}
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus { background-color: transparent; color:#bbb;}
@@ -26,4 +24,40 @@ a:hover { color: #bbb; text-decoration: none; cursor: pointer;}
 	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
 	.navbar-default .navbar-nav .open .dropdown-menu > li > a:focus { color ; #fff;}
 	
-}
+} */
+
+/* 상단 메뉴 */
+nav { width : 800px; margin:0 auto;}
+nav .navbar-header {}
+nav .navbar-header a {display:block; background : url(/resources/images/byminton.png) no-repeat; width:100px; height:50px; color:transparent;}
+nav div { float:left;}
+nav .top-menu { margin : 15px 0 0 0;}
+nav .top-menu li { float:left; margin:0 10px; }
+nav .top-menu li a {font-size:17px; color:#333;}
+nav .top-menu ul,
+nav .top-menu .topfrm {float:left;}
+nav .login-info { float:right;}
+nav .login-info li {float:left}
+
+nav .dropdown { position:relative; display:inline-block;}
+nav .dropdown:hover .drop-menu {display: block;}
+nav .drop-menu {display : none; position: absolute; background-color: #f1f1f1; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;}
+nav .dropdown li {margin : 10px 5px; font-size:15px; color:#eee;}
+
+/*  본문 */
+.container { clear:both; width: 800px; height: 300px; margin:0 auto;}
+
+
+/* footer */
+footer {width:100%; height:100px; background : #ececf1;}
+footer .row { width:800px; margin : 0 auto;}
+footer .row div {float:left; margin: 15px 20px 0;}
+footer .row div:last-child {float:right;}
+
+footer .sns-link h4 { font-size:14px; color:#333; margin:0 0 0 20px;}
+footer .sns-link div {margin:0 0 0 20px;}
+footer .sns-link a {display:block;}
+
+
+
+

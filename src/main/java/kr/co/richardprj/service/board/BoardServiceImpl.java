@@ -27,6 +27,7 @@ import com.example.dao.MemberDAO;
 
 import kr.co.richardprj.dao.board.BoardDAO;
 import kr.co.richardprj.dto.board.AttachFileVO;
+import kr.co.richardprj.dto.board.BoardVO;
 import kr.co.richardprj.dto.board.ContentsVO;
 import kr.co.richardprj.dto.board.PostVO;
 import kr.co.richardprj.dto.board.ReplyVO;
@@ -102,6 +103,8 @@ public class BoardServiceImpl implements BoardService{
 	public int insertPost(PostVO post, MultipartHttpServletRequest mpRequest) throws Exception {
 		int pno = boardDao.selectMaxPostNo(post);
 		post.setPostNo(pno + 1);
+		post.setDelYn("N");
+		
 		logger.info("insert Post is {}", post.toString());
 		
 		int r = boardDao.insertPost(post);
@@ -228,6 +231,11 @@ public class BoardServiceImpl implements BoardService{
 		if (r1 < 1)
 			reply = null;
 		return reply;
+	}
+
+	@Override
+	public BoardVO getBoard(BoardVO board) throws Exception {
+		return boardDao.selectBoard(board);
 	}
 
 }

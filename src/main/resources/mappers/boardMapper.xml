@@ -267,4 +267,10 @@
 		order by a.replyNo desc
 	</select>
 	
+	<select id="selectBoard" parameterType="boardVO" resultType="boardVO">
+		SELECT *
+		from board
+		where boardId = #{boardId}
+	</select>
+	
 </mapper>

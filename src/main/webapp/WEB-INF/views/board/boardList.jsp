@@ -26,7 +26,7 @@
 			var url = "${pageContext.request.contextPath}/postList.do";
 			url = url + "?page=" + page;
 			url = url + "&range=" + range;
-			url = url + "&boardId=${boardId}";
+			url = url + "&boardId=${board.boardId}";
 			location.href = url;
 
 		}
@@ -38,7 +38,7 @@
 			var url = "${pageContext.request.contextPath}/postList.do";
 			url = url + "?page=" + page;
 			url = url + "&range=" + range;
-			url = url + "&boardId=${boardId}";
+			url = url + "&boardId=${board.boardId}";
 			location.href = url;	
 
 		}
@@ -53,7 +53,7 @@
 			var url = "${pageContext.request.contextPath}/postList.do";
 			url = url + "?page=" + page;
 			url = url + "&range=" + range;
-			url = url + "&boardId=${boardId}";
+			url = url + "&boardId=${board.boardId}";
 			location.href = url;
 		}
 		
@@ -69,7 +69,7 @@
 // 			$("#frm").method = "post";
 // 			$("#frm").submit();
 			
-			location.href="/postWrite.do?boardId=${boardId}";
+			location.href="/postWrite.do?boardId=${board.boardId}";
 		}
 
 	</script>
@@ -79,10 +79,10 @@
 
 
 <div class="container">
-  <h2>Basic Board</h2>
-  <p>board type 1</p>
+  <h2>[${board.boardName }]</h2>
+  <p>${board.boardType }</p>
   <form name="frm" id="frm" method="post" action="">
-  	<input type="hidden" name="boardId" value="${boardId }">
+  	<input type="hidden" name="boardId" value="${board.boardId }">
   	<input type="hidden" name="postNo" value="-1">
   	<input type="hidden" name="page" value="${pagination.page }">
   </form>             

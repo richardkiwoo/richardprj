@@ -1,0 +1,15 @@
+
+textarea[diabled="disabled"],
+button[diabled="disabled"],
+select[diabled="disabled"],
+input[diabled="disabled"] { background:#f5f5f5; border-color:#d4d4d4;}
+
+input[type="password"],
+input[type="file"],
+input[type="text"] {height:34px; line-height:34px;}
+input[type="file"] {width:100%;}
+input[type="radio"] {vertical-align:text-bottom;}
+
+.clear {zoom:1; clear:both;}
+.clear:after {content:""; display:block; clear:both";}
+	

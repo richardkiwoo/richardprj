@@ -45,7 +45,10 @@
 	.modal-content .btn-default {float:right}
 	
 	.list-group-item > span {font-size:10px; font-style:italic}
-
+	/* like */
+	.like {float:right;margin:15px 20px 5px 0;}
+	.like a{disply:block; margin:5px 5px;}
+	.like:before {content:""; display: block; background : url(resources/images/icon/thumbup.png) no-repeat 0 0 / 15px auto;}
 	</style>
 	
 	<script type="text/javascript">
@@ -234,6 +237,7 @@
 		  		<button type="button" class="btn btn-primary" onClick="deletePost();">삭제</button>
 		  	</c:if>
 		  		<button type="button" class="btn btn-primary" onClick="goList();">목록</button>
+		  		<div class="like"><a href="#">좋아요!</a><span>${post.recommendCnt }</span></div>
 	  	</div><br>
 	  	<!-- <div class="form-group">
 		  <label for="comment">Comment:</label>

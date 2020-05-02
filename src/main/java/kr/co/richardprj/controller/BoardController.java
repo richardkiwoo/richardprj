@@ -32,11 +32,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.dto.MemberVO;
 
+import kr.co.richardprj.dto.board.BoardVO;
 import kr.co.richardprj.dto.board.PaginationVO;
 import kr.co.richardprj.dto.board.PostVO;
 import kr.co.richardprj.dto.board.ReplyVO;
@@ -225,7 +224,10 @@ public class BoardController implements SessionNames{
 			, @RequestParam(required = false, defaultValue = "1") int page
 			, @RequestParam(required = false, defaultValue = "1") int range
 			, PostVO postVO
+			, BoardVO boardVO
 			) throws Exception {
+		
+		BoardVO board = boardService.getBoard(boardVO);
 		
 		int listCnt = boardService.selectPostListCnt(postVO);
 		
@@ -238,7 +240,7 @@ public class BoardController implements SessionNames{
 		model.addAttribute("pagination", pagination);
 
 		model.addAttribute("postList", boardService.getPostList(postVO));
-		model.addAttribute("boardId", postVO.getBoardId());
+		model.addAttribute("board", board);
 
 		return "board/boardList";
 
